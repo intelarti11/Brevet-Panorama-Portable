@@ -1,0 +1,143 @@
+@config "../../tailwind.config.ts";
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-inter: Arial, Helvetica, sans-serif;
+    /* New color palette definition (HSL) */
+    --color-primary-hsl: 221 83% 53%; /* #3B82F6 - Vibrant blue from image */
+    --color-secondary-hsl: 201 92% 60%; /* #38BDF8 */
+    --color-success-hsl: 160 82% 40%; /* #10B981 */
+    --color-warning-hsl: 38 92% 51%; /* #F59E0B */
+    --color-error-hsl: 0 84% 60%; /* #EF4444 */
+    --color-bg-hsl: 210 17% 98%; /* #F9FAFB */
+    --color-surface-hsl: 0 0% 100%; /* #FFFFFF */
+    --color-text-primary-hsl: 215 39% 11%; /* #111827 */
+    --color-text-secondary-hsl: 212 10% 46%; /* #6B7280 */
+
+    /* ShadCN Theme Variables Mapping */
+    --background: 210 17% 98%;
+    --foreground: 215 39% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 39% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 39% 11%;
+
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 201 92% 60%;
+    --secondary-foreground: 215 39% 11%;
+
+    --muted: 210 14% 93%;
+    --muted-foreground: 212 10% 46%;
+
+    --accent: 201 92% 60%;
+    --accent-foreground: 215 39% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 14% 93%;
+    --input: 210 14% 93%;
+    --ring: 221 83% 53%;
+
+    --radius: 8px; /* Updated border radius */
+
+    /* Chart specific colors */
+    --chart-1: 16 86% 63%; /* #F48262 - Reddish-orange from image */
+    --chart-2: 201 92% 60%;
+    --chart-3: 38 92% 51%;
+    --chart-4: 160 82% 40%;
+    --chart-5: 262 84% 60%;
+
+    --chart-admis: 160 82% 40%;
+    --chart-assez-bien: 38 92% 51%;
+    --chart-tres-bien: 49 96% 77%; /* #FDE68A */
+    --chart-bien: 223 78% 48%; /* #1D4ED8 */
+    --chart-sans-mention: 215 9% 68%; /* #9CA3AF */
+    /* For "Refusés", use --destructive */
+
+    /* Sidebar specific colors */
+    --sidebar-background: 221 83% 53%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-accent: 201 92% 60%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 222 69% 50%;
+    --sidebar-ring: 201 92% 60%;
+  }
+
+  .dark {
+    /* Dark theme (basic adaptation, can be further refined) */
+    --color-primary-hsl: 221 83% 63%; /* Lighter vibrant blue for dark mode */
+    --color-secondary-hsl: 201 92% 50%;
+    --color-success-hsl: 160 82% 35%;
+    --color-warning-hsl: 38 92% 45%;
+    --color-error-hsl: 0 84% 50%;
+    --color-bg-hsl: 220 13% 10%; /* Dark background */
+    --color-surface-hsl: 220 13% 18%; /* Dark surface for cards */
+    --color-text-primary-hsl: 210 17% 95%; /* Light text */
+    --color-text-secondary-hsl: 212 10% 65%;
+
+    --background: 220 13% 10%;
+    --foreground: 210 17% 95%;
+
+    --card: 220 13% 18%;
+    --card-foreground: 210 17% 95%;
+
+    --popover: 220 13% 18%;
+    --popover-foreground: 210 17% 95%;
+
+    --primary: 221 83% 63%;
+    --primary-foreground: 210 17% 95%;
+
+    --secondary: 201 92% 50%;
+    --secondary-foreground: 210 17% 95%;
+
+    --muted: 220 13% 25%;
+    --muted-foreground: 212 10% 65%;
+
+    --accent: 201 92% 50%;
+    --accent-foreground: 210 17% 95%;
+
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 210 17% 95%;
+
+    --border: 220 13% 30%;
+    --input: 220 13% 30%;
+    --ring: 221 83% 63%;
+
+    /* Chart specific colors for dark theme */
+    --chart-1: 16 80% 55%; /* Slightly desaturated orange for dark mode */
+    --chart-2: 201 85% 55%;
+    --chart-3: 38 85% 55%;
+    --chart-4: 160 75% 40%;
+    --chart-5: 262 78% 65%;
+
+    --chart-admis: 160 82% 35%;
+    --chart-assez-bien: 38 92% 45%;
+    --chart-tres-bien: 49 80% 70%;
+    --chart-bien: 223 70% 55%;
+    --chart-sans-mention: 215 10% 55%;
+
+    /* Sidebar specific colors for dark theme */
+    --sidebar-background: 220 13% 14%; /* Darker primary for sidebar */
+    --sidebar-foreground: 210 17% 95%;
+    --sidebar-accent: 201 92% 50%;
+    --sidebar-accent-foreground: 210 17% 95%;
+    --sidebar-border: 220 13% 25%;
+    --sidebar-ring: 201 92% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    line-height: 1.6; /* Aéré interlignes */
+  }
+}

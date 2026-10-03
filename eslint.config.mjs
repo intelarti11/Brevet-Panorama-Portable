@@ -1,0 +1,14 @@
+import { defineConfig } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+
+export default defineConfig([
+  {
+    ignores: [".next/**", "node_modules/**", "out/**", "src-tauri/**", "dist-portable/**", "WebView2Fixed/**", "tmp/**"],
+  },
+  ...nextVitals,
+  {
+    rules: {
+      "react/no-unescaped-entities": "off",
+    },
+  },
+]);

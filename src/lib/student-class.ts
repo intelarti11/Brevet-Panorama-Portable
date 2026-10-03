@@ -1,0 +1,12 @@
+export function normalizeClassName(value: unknown): string | undefined {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : undefined;
+}
+
+export function getClassCellValue(value: unknown): string {
+  return normalizeClassName(value) ?? "";
+}
