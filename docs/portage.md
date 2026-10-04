@@ -91,17 +91,36 @@ les pages de l'application; ce controle n'est pas une capture reseau de tout
 le systeme Windows. Les pages PIX sans donnees ont ete affichees et le stockage
 PIX reel a ete teste; tous les graphiques PIX n'ont pas ete compares visuellement.
 
-## Dependances de developpement
+## Dépendances de développement — 4 octobre 2026
 
-L'installation depuis le lock reussit. `npm audit` signale 17 entrees, dont
-Next 16.2.1 en criticite critique. L'[avis Next pour les serveurs Windows](https://github.com/vercel/next.js/security/advisories/GHSA-p293-qw3h-jr36)
-concerne le serveur HTTP Next, absent de l'executable portable : aucune route
-API, Server Action, optimisation d'image ou `next/og` n'est embarquee. Le greffon
-HTML de jsPDF qui charge DOMPurify n'est pas utilise par les exports du projet.
-Aucun chemin affecte depuis les imports XML/XLSX n'a ete identifie dans cette revue.
+Next et eslint-config-next sont verrouillés en 16.3.8 ; tsx en 4.23.15.
+Les deux éditions partagent les mêmes dépendances npm verrouillées.
+`npm audit --omit=dev` ne signale aucune vulnérabilité de production.
+L'audit complet conserve cinq alertes élevées dans la chaîne ESLint / fast-glob /
+micromatch / braces, utilisée pour vérifier les sources et absente du paquet
+portable. L'[avis braces](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm)
+ne fournit pas encore de version corrigée. La proposition npm de revenir à
+eslint-config-next 14 n'est pas appliquée, car le projet utilise Next 16.
 
-Les alertes restent a traiter pour l'outillage de developpement; elles ne sont
-pas presentees comme corrigees. Le serveur de developpement est desormais lie
-a `127.0.0.1`. Une mise a jour de Next est requise avant d'en faire un serveur
-accessible au reseau. Le produit distribue utilise uniquement les pages statiques
-et le backend Tauri/Rust, sans serveur Next.
+Ces alertes ne sont pas présentées comme corrigées. Aucun serveur Next n'est
+inclus : le produit embarque les pages statiques et le backend Tauri/Rust.
+Les imports XML/XLSX et les exports gardent leurs bibliothèques verrouillées.
+
+## Deux dépôts indépendants
+
+- [Brevet-Panorama-Portable](https://github.com/intelarti11/Brevet-Panorama-Portable) : édition sans Remplacements, publique, préparée pour la Forge.
+- [Brevet-Panorama-Portable-Complet](https://github.com/intelarti11/Brevet-Panorama-Portable-Complet) : édition avec Remplacements, privée.
+
+Chaque dépôt conserve seulement la branche principale `main`. Les ZIP et
+notices sont publiés dans les versions GitHub de leur dépôt respectif.
+Le test sur un second PC Windows sans WebView2 préinstallé reste à effectuer.
+## Contrôles React
+
+La mise à jour du plugin React Hooks active des diagnostics supplémentaires du
+React Compiler, qui n'est pas activé dans cette application. Les deux contraintes
+`set-state-in-effect` et `refs` sont explicitement différées dans la configuration
+ESLint pour les écrans asynchrones existants. Les règles `rules-of-hooks` et
+`exhaustive-deps` restent actives au niveau erreur. La règle `static-components`
+reste active : les blocs du panorama sont des composants définis au niveau module,
+avec des propriétés explicites, pour éviter de remonter leurs graphiques à chaque
+rendu du parent. Cette décision ne change pas les règles de calcul du brevet.

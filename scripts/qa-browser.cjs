@@ -9,13 +9,7 @@
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
-let playwright;
-try {
-  playwright = require("playwright");
-} catch {
-  playwright = require("C:/Users/M2/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
-}
-const { chromium } = playwright;
+const { chromium } = require("playwright");
 const XLSX = require("xlsx-js-style");
 const { zipSync, strToU8 } = require("fflate");
 

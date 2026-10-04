@@ -1,0 +1,32 @@
+name: Vérification des sources
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
+  native:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Tests de la base locale Rust
+        run: cargo test --locked --manifest-path src-tauri/Cargo.toml

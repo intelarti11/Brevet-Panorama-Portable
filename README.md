@@ -1,76 +1,67 @@
-# Brevet Panorama Portable
+# Brevet Panorama Portable — sans Remplacements
 
-Version Windows x64, locale et mono-utilisateur de
-[Brevet Panorama](https://github.com/intelarti11/Brevet-Panorama).
+Édition Windows x64, locale et mono-utilisateur de [Brevet Panorama](https://github.com/intelarti11/Brevet-Panorama). Elle permet de suivre les résultats du brevet blanc et du DNB, d’analyser les résultats par élève, classe et établissement, et d’exporter des bilans.
 
-La version 0.1.1 ne contient pas le module Remplacements.
-Les deux editions peuvent fonctionner dans des dossiers separes.
+Cette édition **ne contient pas le module Remplacements**. L’édition complète avec ce module est maintenue dans un dépôt séparé. Ce sont deux projets distincts, chacun avec sa branche principale <code>main</code> ; les éditions ne sont pas des branches l’une de l’autre.
 
-La premiere version portable est construite et ses principaux parcours ont ete
-verifies dans l'application Windows. Ce depot contient les sources, sans donnees
-d'eleves. Aucune connexion Firebase n'est necessaire.
+## Fonctionnalités
 
-L'interface React est exportee statiquement par Next.js et embarquee dans Tauri.
-Rust gere une base SQLite locale, les transactions et les sauvegardes.
-Les regles de calcul et les generateurs PDF/XLSX du site sont reutilises.
+- Import des identités depuis l’export SIECLE/BEE : sélectionnez <code>ExportXML_ElevesSansAdresses.xml</code>, directement ou dans son ZIP. Seuls les élèves de troisième sont importés.
+- Imports des notes du brevet blanc et du DNB séparés ; les modèles XLSX et les résultats BB1/BB2 ne se mélangent pas avec ceux du DNB.
+- Saisie et analyse des résultats, suivi PIX, verrouillage des notes et comparaisons.
+- Exports et bilans PDF/XLSX.
+- Base SQLite et sauvegardes stockées localement dans le dossier de l’application ; aucune connexion Firebase n’est nécessaire.
 
-## Utilisation
+## Utilisation sous Windows
 
-Extraire entierement le ZIP dans un dossier inscriptible sur un disque local,
-puis ouvrir `BrevetPanoramaPortable.exe`. Garder le dossier `WebView2Fixed`
-a cote du programme : le moteur inclus permet de demarrer sans installation
-prealable de WebView2. Le paquet initial ne contient aucune base d'eleves.
+Téléchargement : [dernière version et archive ZIP](https://github.com/intelarti11/Brevet-Panorama-Portable/releases/latest). [Page de présentation](https://intelarti11.github.io/Brevet-Panorama-Portable/).
 
-L'application cree `data/panorama.sqlite3`, son profil WebView dans
-`data/webview` et ses sauvegardes dans `data/backups`. Dans **Donnees locales**,
-on peut creer une sauvegarde et restaurer une sauvegarde existante. Les vingt
-plus recentes sont conservees. Fermer l'application avant de deplacer ou copier
-l'ensemble du dossier; les donnees et sauvegardes suivent alors le programme.
+1. Téléchargez et extrayez **tout le contenu** du ZIP dans un dossier local où vous pouvez écrire.
+2. Gardez <code>WebView2Fixed</code> à côté de <code>BrevetPanoramaPortable.exe</code>.
+3. Lancez <code>BrevetPanoramaPortable.exe</code>.
 
-Les identites viennent du fichier officiel SIECLE `ExportXML_ElevesSansAdresses.xml`
-(directement ou dans son ZIP), en ne retenant que
-les eleves de 3e. Les modeles XLSX pre-remplis et imports des notes du brevet
-blanc (BB1 ou BB2) et du DNB sont separes. Les analyses, notes manuelles,
-verrous, PIX et exports PDF/XLSX sont disponibles localement.
+Au premier lancement, l’application crée <code>data/panorama.sqlite3</code>, un profil WebView dans <code>data/webview</code> et le dossier <code>data/backups</code>. Dans **Données locales**, créez régulièrement une sauvegarde et restaurez-la au besoin. Fermez l’application avant de copier ou déplacer son dossier. Le ZIP initial ne contient aucune donnée d’élève.
 
-Les essais utilisent uniquement des donnees fictives. Un essai sur un autre PC
-Windows sans WebView2 deja installe reste a effectuer avant diffusion large.
+Pour les détails sur les données et les mises à jour, consultez [la notice de distribution](docs/distribution.md). Le moteur Microsoft WebView2 livré avec l’application et ses conditions sont décrits dans [la notice WebView2](docs/webview-runtime.md).
 
-## Developpement
+## Développement
 
-Prerequis : Node.js, Rust stable, outils MSVC et SDK Windows.
+Prérequis : Node.js, Rust stable, les outils MSVC et le SDK Windows. Depuis la racine du dépôt :
 
-```powershell
+~~~powershell
 npm ci
 npm run tauri -- dev
-```
+~~~
 
-Un navigateur seul peut afficher les ecrans, mais les donnees exigent le backend Tauri.
+Le navigateur seul ne fournit pas le stockage local : les fonctions de données nécessitent le backend Tauri.
 
-```powershell
+~~~powershell
 npm test
 npm run lint
 npm run typecheck
 npm run build
 npm run native:test
-```
+~~~
 
-Voir [le suivi du portage](docs/portage.md) pour les criteres de validation.
+Voir [le suivi du portage](docs/portage.md) et [les consignes de contribution](CONTRIBUTING.md).
 
-## Construire le dossier portable
+### Construire le ZIP portable
 
-Lire et accepter les conditions Microsoft avant l'acquisition du runtime :
+Après avoir lu et accepté les [conditions Microsoft WebView2](https://developer.microsoft.com/microsoft-edge/api/eula/webview2?locale=en-us&fixed=true), acquérez le runtime depuis Microsoft, puis construisez le paquet :
 
-```powershell
+~~~powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/get-webview-runtime.ps1 -AcceptLicense
 npm run portable
-```
+~~~
 
-Le script de construction prepare un dossier et son ZIP dans `dist-portable/`,
-avec l'executable, le runtime complet, les licences et une notice. Les fichiers
-generes, bases, sauvegardes et exports sont ignores par Git. Voir
-[la provenance et les conditions du runtime](docs/webview-runtime.md).
+La construction prépare le dossier et son ZIP dans <code>dist-portable/</code>, avec une base initialement vide, les notices et le moteur complet. Les dépendances sont téléchargées lors de la préparation des sources ; l'application embarque ensuite son interface et son stockage local.
 
-## Licence
+## Auteur, licence et état de la candidature
 
-AGPL-3.0-or-later, comme l'application d'origine. Voir [LICENSE](LICENSE).
+Auteur et mainteneur : [intelarti11](https://github.com/intelarti11).
+
+Les sources de cette édition sont préparées pour une publication publique et une proposition à la Ressourcerie de la Forge des communs numériques éducatifs. **La candidature n’est pas encore approuvée et le projet n’est pas présenté comme déjà référencé par la Forge.** La description proposée et les points restant à traiter sont dans [la checklist Forge](docs/forge.md).
+
+Une partie du code et de la documentation a été préparée avec une assistance de programmation par Codex (OpenAI). L’application ne propose pas de fonctionnalité d’IA générative. Cette mention décrit le processus de développement et ne prétend pas certifier la conformité à un cadre officiel.
+
+Le code de Brevet Panorama Portable est sous licence [GNU AGPL version 3 ou ultérieure](LICENSE). Les polices Noto Sans embarquées ont leur propre licence SIL OFL 1.1 et leurs crédits dans [les notices des composants tiers](THIRD_PARTY_NOTICES.md) et [public/fonts/OFL.txt](public/fonts/OFL.txt).

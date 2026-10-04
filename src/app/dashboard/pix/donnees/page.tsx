@@ -135,7 +135,6 @@ export default function PixDataPage() {
   }, [callGetPixAvailableYears]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- triggers async loading of remote years on mount
     fetchYears();
   }, [fetchYears]);
 
@@ -175,7 +174,6 @@ export default function PixDataPage() {
 
   useEffect(() => {
     if (selectedYear) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- triggers async loading of remote students after the selected year changes
       fetchStudents(selectedYear);
     } else {
       setStudentsForSelectedYear([]);

@@ -1,0 +1,14 @@
+# Import this repository into the public Forge project, then adapt the links in
+# site/index.html and disable the unique Pages domain before proposing the form.
+publish-forge-pages:
+  image: alpine:3.21
+  script:
+    - mkdir -p forge-pages
+    - cp -R site/. forge-pages/
+  pages:
+    publish: forge-pages
+  artifacts:
+    paths:
+      - forge-pages
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'

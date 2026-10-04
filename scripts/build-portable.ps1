@@ -127,6 +127,38 @@ Get-ChildItem -LiteralPath $runtimeSource -Force | ForEach-Object {
     Copy-Item -LiteralPath $_.FullName -Destination $packagedRuntime -Recurse -Force
 }
 Copy-Item -LiteralPath $appLicense -Destination (Join-Path $packageDirectory 'LICENSE')
+foreach ($noticeName in @('README.md', 'THIRD_PARTY_NOTICES.md', 'CONTRIBUTING.md')) {
+    $noticeSource = Join-Path $repositoryRoot $noticeName
+    if (Test-Path -LiteralPath $noticeSource -PathType Leaf) {
+        Copy-Item -LiteralPath $noticeSource -Destination (Join-Path $packageDirectory $noticeName)
+    }
+}
+$packagedDocs = Join-Path $packageDirectory 'docs'
+New-Item -ItemType Directory -Force -Path $packagedDocs | Out-Null
+foreach ($documentation in @('webview-runtime.md', 'distribution.md', 'portage.md', 'forge.md')) {
+    $documentationSource = Join-Path $repositoryRoot "docs\$documentation"
+    if (Test-Path -LiteralPath $documentationSource -PathType Leaf) {
+        Copy-Item -LiteralPath $documentationSource -Destination (Join-Path $packagedDocs $documentation)
+    }
+}
+$fontLicense = Join-Path $repositoryRoot 'public\fonts\OFL.txt'
+if (-not (Test-Path -LiteralPath $fontLicense -PathType Leaf)) {
+    throw 'La licence des polices Noto Sans est absente de public\fonts\OFL.txt.'
+}
+$fontLicenseDirectory = Join-Path $packageDirectory 'LICENCES\Polices'
+New-Item -ItemType Directory -Force -Path $fontLicenseDirectory | Out-Null
+Copy-Item -LiteralPath $fontLicense -Destination (Join-Path $fontLicenseDirectory 'OFL.txt')
+$publicFontNotices = Join-Path $packageDirectory 'public\fonts'
+New-Item -ItemType Directory -Force -Path $publicFontNotices | Out-Null
+Copy-Item -LiteralPath $fontLicense -Destination (Join-Path $publicFontNotices 'OFL.txt')
+& node (Join-Path $PSScriptRoot 'collect-dependency-licenses.mjs') (Join-Path $packageDirectory 'LICENCES\Dependances')
+if ($LASTEXITCODE -ne 0) {
+    throw 'La collecte des licences des dépendances a échoué.'
+}
+$sourceCommit = & git -C $repositoryRoot rev-parse HEAD
+if ($LASTEXITCODE -ne 0) { throw "Impossible d'identifier le commit source." }
+"Sources : https://github.com/intelarti11/Brevet-Panorama-Portable/tree/$sourceCommit`nVersion : $appVersion`nÉdition : sans Remplacements" |
+    Set-Content -LiteralPath (Join-Path $packageDirectory 'SOURCE.txt') -Encoding UTF8
 $microsoftLicenses = Join-Path $packageDirectory 'LICENCES\Microsoft'
 foreach ($license in $runtimeLicenseFiles) {
     $relativeLicensePath = $license.File.FullName.Substring($license.Root.Length).TrimStart('\')
@@ -148,7 +180,7 @@ L'application fonctionne hors ligne. La base SQLite et les sauvegardes sont cré
 
 Pour importer les élèves de troisième, utilisez ExportXML_ElevesSansAdresses.xml (SIECLE / BEE), directement ou dans son archive ZIP. Le module Remplacements n'est pas inclus.
 
-La licence du projet est incluse dans LICENSE. Les conditions Microsoft du runtime WebView2 sont incluses dans LICENCES\Microsoft.
+La licence du projet est incluse dans LICENSE. Les notices des composants sont dans THIRD_PARTY_NOTICES.md et LICENCES. Les conditions Microsoft du runtime WebView2 sont incluses dans LICENCES\Microsoft. SOURCE.txt identifie le code de cette version.
 '@ | Set-Content -LiteralPath (Join-Path $packageDirectory 'LISEZ-MOI.txt') -Encoding UTF8
 
 $archivePath = Join-Path $outputRoot "$packageName.zip"

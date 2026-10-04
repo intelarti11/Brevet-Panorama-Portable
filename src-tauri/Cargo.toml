@@ -2,6 +2,8 @@
 name = "brevet-panorama-portable"
 version = "0.1.1"
 description = "Application locale Brevet Panorama"
+license = "AGPL-3.0-or-later"
+repository = "https://github.com/intelarti11/Brevet-Panorama-Portable"
 edition = "2021"
 rust-version = "1.77.2"
 

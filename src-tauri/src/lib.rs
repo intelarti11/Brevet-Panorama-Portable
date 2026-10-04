@@ -875,7 +875,7 @@ pub fn run() {
                 .clone();
             fs::create_dir_all(&webview_directory)?;
             WebviewWindowBuilder::new(app, "main", WebviewUrl::App("index.html".into()))
-                .title("Brevet Panorama")
+                .title("Brevet Panorama Portable — Sans Remplacements")
                 .inner_size(1280.0, 820.0)
                 .min_inner_size(900.0, 600.0)
                 .data_directory(webview_directory)

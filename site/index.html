@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Analyser les résultats du DNB et des brevets blancs avec Brevet Panorama Portable, une application Windows à données locales.">
+  <title>Brevet Panorama Portable</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #172b4d; background: #f5f7fb; }
+    body { margin: 0; line-height: 1.65; }
+    main { max-width: 850px; margin: auto; padding: 48px 24px; }
+    h1 { line-height: 1.15; font-size: clamp(2rem, 6vw, 3rem); margin: 12px 0 20px; }
+    h2 { font-size: 1.4rem; margin-top: 0; }
+    .label { font-weight: 650; color: #356260; }
+    .lead { font-size: 1.2rem; max-width: 730px; }
+    a { color: #1847a3; text-underline-offset: 3px; }
+    .download { display: inline-block; border-radius: 8px; padding: 12px 20px; background: #1847a3; color: white; font-weight: 650; margin: 12px 0; }
+    section { padding: 24px; margin-top: 24px; background: white; border: 1px solid #dce3ed; border-radius: 12px; }
+    code { overflow-wrap: anywhere; }
+    li { margin: 6px 0; }
+    footer { margin-top: 36px; font-size: .92rem; }
+    a:focus-visible { outline: 3px solid #c47716; outline-offset: 4px; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="label">Windows x64 · Données locales · Licence AGPL</p>
+    <h1>Brevet Panorama Portable</h1>
+    <p class="lead">Analyser les résultats du DNB, comparer les brevets blancs et produire des bilans par élève, classe et établissement.</p>
+    <p>Une application destinée aux personnels de direction et aux enseignants de collège. Cette édition se concentre sur les élèves, les résultats et les bilans du brevet.</p>
+    <a class="download" href="https://github.com/intelarti11/Brevet-Panorama-Portable/releases/latest">Télécharger la version Windows</a>
+    <p>Ouvrez la rubrique « Assets » de la version, téléchargez le ZIP, extrayez-le entièrement dans un dossier inscriptible, puis lancez <code>BrevetPanoramaPortable.exe</code>.</p>
+    <section>
+      <h2>Préparer les élèves et les notes</h2>
+      <ol>
+        <li>Importez l’export SIECLE / BEE <code>ExportXML_ElevesSansAdresses.xml</code>, directement ou dans son ZIP. Seuls les élèves de troisième sont proposés.</li>
+        <li>Téléchargez les modèles XLSX préremplis avec les identités et les colonnes attendues.</li>
+        <li>Complétez et importez séparément les notes du brevet blanc (BB1 ou BB2) et les résultats du DNB.</li>
+        <li>Consultez les panoramas, les comparaisons et les bilans PDF ou XLSX. L’import PIX est également disponible.</li>
+      </ol>
+    </section>
+    <section>
+      <h2>Conserver et sauvegarder les données</h2>
+      <p>La base SQLite et les sauvegardes restent dans le sous-dossier <code>data</code>, à côté du programme. L’application métier fonctionne hors ligne, sans compte ni connexion Firebase.</p>
+      <p>Fermez l’application avant de copier ou déplacer le dossier complet. Le menu « Données locales » permet de créer et de restaurer une sauvegarde.</p>
+      <p>Le moteur Microsoft WebView2 est inclus et possède sa propre licence. Les fichiers <code>LISEZ-MOI.txt</code> et <code>THIRD_PARTY_NOTICES.md</code> du paquet expliquent la distribution et les composants.</p>
+      <p>Les essais ont été effectués sur un poste Windows ; un essai sur un second PC sans WebView2 préinstallé reste à effectuer.</p>
+    </section>
+    <section>
+      <h2>Un logiciel partageable</h2>
+      <p>Projet porté par <a href="https://github.com/intelarti11">intelarti11</a>, sous <a href="https://github.com/intelarti11/Brevet-Panorama-Portable/blob/main/LICENSE">licence AGPL-3.0-or-later</a>. Le développement est assisté par Codex ; les calculs de l’application suivent des règles explicites, sans service d’IA intégré.</p>
+      <p><a href="https://github.com/intelarti11/Brevet-Panorama-Portable">Consulter le code et la documentation</a> · <a href="https://github.com/intelarti11/Brevet-Panorama-Portable/issues">Signaler un problème</a></p>
+      <p>Cette édition est préparée pour une proposition à <a href="https://docs.forge.apps.education.fr/">La Forge des communs numériques éducatifs</a>. Son référencement reste à demander. Lors de son dépôt sur la Forge, les liens de code, de licence et de téléchargement de cette page devront pointer vers ce dépôt.</p>
+    </section>
+    <footer>Brevet Panorama Portable · Auteur : intelarti11 · <a href="https://github.com/intelarti11/Brevet-Panorama-Portable/blob/main/THIRD_PARTY_NOTICES.md">Crédits et licences des composants</a></footer>
+  </main>
+</body>
+</html>
