@@ -114,6 +114,11 @@ Les imports XML/XLSX et les exports gardent leurs bibliothèques verrouillées.
 Chaque dépôt conserve seulement la branche principale `main`. Les ZIP et
 notices sont publiés dans les versions GitHub de leur dépôt respectif.
 Le test sur un second PC Windows sans WebView2 préinstallé reste à effectuer.
+
+Le contrôle de typage commence par `next typegen`, afin de générer les types de
+routes sur une copie neuve des sources. `next-env.d.ts` est généré par Next et
+ignoré par Git, comme les dossiers de compilation.
+
 ## Contrôles React
 
 La mise à jour du plugin React Hooks active des diagnostics supplémentaires du
