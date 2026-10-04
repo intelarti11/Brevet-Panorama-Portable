@@ -1,6 +1,6 @@
 # Contribuer
 
-Ce dépôt contient l’édition Windows portable sans Remplacements. L’édition complète est maintenue dans un dépôt distinct.
+Ce dépôt contient l’application Brevet Panorama Portable pour Windows.
 
 ## Signaler un problème
 

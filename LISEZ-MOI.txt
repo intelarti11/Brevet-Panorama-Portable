@@ -1,4 +1,4 @@
-BREVET PANORAMA PORTABLE — SANS REMPLACEMENTS
+BREVET PANORAMA PORTABLE
 Application locale pour Windows 10/11 x64
 
 TELECHARGEMENT
@@ -19,7 +19,7 @@ Vous pouvez sélectionner le fichier XML seul ou un ZIP qui le contient. Seuls l
 
 Choisissez l’année du brevet avant d’importer les élèves. Téléchargez ensuite le modèle Excel prérempli correspondant aux notes à saisir, complétez-le et importez-le dans la rubrique prévue.
 
-Les imports des notes du brevet blanc BB1 et BB2 sont distincts de l’import Excel des résultats officiels du DNB. Choisissez le type d’import qui correspond au fichier. Les résultats PIX peuvent aussi être importés. Cette édition ne comprend pas le module Remplacements.
+Les imports des notes du brevet blanc BB1 et BB2 sont distincts de l’import Excel des résultats officiels du DNB. Choisissez le type d’import qui correspond au fichier. Les résultats PIX peuvent aussi être importés.
 
 DONNÉES ET SAUVEGARDES
 Ouvrez Données locales pour voir l’emplacement des données et créer une sauvegarde. Pour restaurer, sélectionnez une sauvegarde puis confirmez : la restauration remplace les données actuelles. Créez d’abord une sauvegarde si vous souhaitez conserver l’état actuel.

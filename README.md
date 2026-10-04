@@ -1,6 +1,6 @@
-# Brevet Panorama Portable — sans Remplacements
+# Brevet Panorama Portable
 
-Application Windows x64 pour suivre localement les élèves et les résultats du brevet blanc et du DNB. Cette édition ne contient pas le module Remplacements.
+Application Windows x64 pour suivre localement les élèves et les résultats du brevet blanc et du DNB.
 
 ## Télécharger et lancer
 

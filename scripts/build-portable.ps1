@@ -116,7 +116,7 @@ if (-not (Test-Path -LiteralPath $executable -PathType Leaf)) {
 New-Item -ItemType Directory -Force -Path $outputRoot | Out-Null
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss-fff'
 $appVersion = (Get-Content -LiteralPath (Join-Path $repositoryRoot 'package.json') -Raw | ConvertFrom-Json).version
-$packageName = "BrevetPanoramaPortable-$appVersion-SansRemplacements-$stamp"
+$packageName = "BrevetPanoramaPortable-$appVersion-Forge-Windows-x64-$stamp"
 $packageDirectory = Join-Path $outputRoot $packageName
 New-Item -ItemType Directory -Path $packageDirectory | Out-Null
 
@@ -147,7 +147,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 $sourceCommit = & git -C $repositoryRoot rev-parse HEAD
 if ($LASTEXITCODE -ne 0) { throw "Impossible d'identifier le commit source." }
-"Sources : https://github.com/intelarti11/Brevet-Panorama-Portable/tree/$sourceCommit`nVersion : $appVersion`nÉdition : sans Remplacements" |
+"Sources : https://github.com/intelarti11/Brevet-Panorama-Portable/tree/$sourceCommit`nVersion : $appVersion" |
     Set-Content -LiteralPath (Join-Path $packageDirectory 'SOURCE.txt') -Encoding UTF8
 $microsoftLicenses = Join-Path $packageDirectory 'LICENCES\Microsoft'
 foreach ($license in $runtimeLicenseFiles) {
