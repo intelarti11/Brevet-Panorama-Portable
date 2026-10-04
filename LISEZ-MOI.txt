@@ -1,0 +1,43 @@
+BREVET PANORAMA PORTABLE — SANS REMPLACEMENTS
+Application locale pour Windows 10/11 x64
+
+TELECHARGEMENT
+Téléchargez la dernière version ici :
+https://github.com/intelarti11/Brevet-Panorama-Portable/releases/latest
+
+INSTALLATION ET LANCEMENT
+1. Extrayez tout le contenu du ZIP dans un dossier local où vous pouvez écrire.
+2. Gardez les fichiers et sous-dossiers ensemble, notamment WebView2Fixed et data.
+3. Lancez BrevetPanoramaPortable.exe.
+
+L’application fonctionne localement, sans compte ni connexion réseau. Elle est prévue pour une personne à la fois. Le dossier data, à côté de l’exécutable, contient la base et les sauvegardes.
+
+ÉLÈVES ET RÉSULTATS
+Dans l’application, ouvrez Importer des données pour importer les élèves depuis l’export SIECLE / BEE nommé exactement :
+ExportXML_ElevesSansAdresses.xml
+Vous pouvez sélectionner le fichier XML seul ou un ZIP qui le contient. Seuls les élèves de troisième sont importés.
+
+Choisissez l’année du brevet avant d’importer les élèves. Téléchargez ensuite le modèle Excel prérempli correspondant aux notes à saisir, complétez-le et importez-le dans la rubrique prévue.
+
+Les imports des notes du brevet blanc BB1 et BB2 sont distincts de l’import Excel des résultats officiels du DNB. Choisissez le type d’import qui correspond au fichier. Les résultats PIX peuvent aussi être importés. Cette édition ne comprend pas le module Remplacements.
+
+DONNÉES ET SAUVEGARDES
+Ouvrez Données locales pour voir l’emplacement des données et créer une sauvegarde. Pour restaurer, sélectionnez une sauvegarde puis confirmez : la restauration remplace les données actuelles. Créez d’abord une sauvegarde si vous souhaitez conserver l’état actuel.
+
+Pour déplacer l’application ou ses données, fermez-la et copiez le dossier complet, y compris data et WebView2Fixed, vers un autre emplacement inscriptible. Gardez aussi une copie de sauvegarde dans un emplacement séparé.
+
+AIDE
+Versions : https://github.com/intelarti11/Brevet-Panorama-Portable/releases
+Signaler un problème : https://github.com/intelarti11/Brevet-Panorama-Portable/issues
+Ne transmettez jamais de nom d’élève, d’INE, de fichier SIECLE, de notes, de base ou de sauvegarde. Reproduisez les problèmes avec des données fictives.
+
+LICENCES ET SOURCE
+Le code est sous licence GNU AGPL version 3 ou ultérieure ; le texte est fourni dans LICENSE. Les notices sont décrites dans THIRD_PARTY_NOTICES.md et regroupées sous LICENCES. La licence de police Noto Sans est sous LICENCES\Polices\OFL.txt. La licence et les autres avis Microsoft de WebView2 sont sous WebView2Fixed et LICENCES\Microsoft.
+
+Les conditions Microsoft de WebView2 indiquent que Microsoft Defender SmartScreen peut collecter et transmettre des données à Microsoft, sauf lorsque SmartScreen est désactivé. Consultez LICENSE-MICROSOFT-WEBVIEW2.html dans WebView2Fixed et les paramètres de confidentialité de Windows.
+
+SOURCE.txt indique le dépôt et la version du code correspondant à cette archive :
+https://github.com/intelarti11/Brevet-Panorama-Portable
+
+Auteur et mainteneur : intelarti11
+https://github.com/intelarti11

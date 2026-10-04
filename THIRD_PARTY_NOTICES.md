@@ -1,23 +1,21 @@
 # Notices des composants tiers
 
-Le code de Brevet Panorama Portable est proposé sous GNU AGPL-3.0-or-later ; voir [LICENSE](LICENSE). Les composants tiers gardent leurs propres auteurs et licences.
+Le code de Brevet Panorama Portable est distribué sous licence GNU Affero General Public License, version 3 ou ultérieure. Le texte intégral est fourni dans **LICENSE**. Le code source correspondant à l’exécutable est indiqué dans **SOURCE.txt** dans l’archive.
 
 ## Polices Noto Sans
 
-L’application embarque les fichiers <code>public/fonts/NotoSans-Regular.ttf</code> et <code>public/fonts/NotoSans-Bold.ttf</code>, version 2.008 d’après les métadonnées intégrées.
+Les fichiers Noto Sans Regular et Bold intégrés à l’application sont en version 2.008. Leurs métadonnées indiquent Copyright 2015–2021 Google LLC et créditent Monotype Design Team et Irene Vlachou. Ils sont sous licence SIL Open Font License 1.1. Le texte complet se trouve, dans les sources, à **public/fonts/OFL.txt** et, dans l’archive portable, à **LICENCES/Polices/OFL.txt**.
 
-- Copyright indiqué dans les fichiers : Copyright 2015-2021 Google LLC. All Rights Reserved.
-- Métadonnées de conception : Monotype Design Team ; « Designed by Monotype design team, Irene Vlachou. »
-- Licence : SIL Open Font License 1.1. Le texte complet est dans [public/fonts/OFL.txt](public/fonts/OFL.txt).
-- Références amont : [Google Fonts — Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans), [Google Fonts — métadonnées et licence](https://github.com/google/fonts/tree/main/ofl/notosans) et [dépôt du projet Noto Latin/Greek/Cyrillic](https://github.com/notofonts/latin-greek-cyrillic).
-
-Noto est une marque de Google LLC. La licence des polices ne change pas celle du logiciel.
+Références amont : [Google Fonts — Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans), [métadonnées et licence](https://github.com/google/fonts/tree/main/ofl/notosans) et [dépôt Noto Latin/Greek/Cyrillic](https://github.com/notofonts/latin-greek-cyrillic). Noto est une marque de Google LLC. La licence des polices reste distincte de celle du logiciel.
 
 ## Microsoft WebView2 Fixed Version
 
-Les archives portables embarquent le runtime Microsoft WebView2 Fixed Version. Sa licence et sa provenance sont distinctes de l’AGPL du logiciel. La notice Microsoft fournie avec le runtime se trouve dans <code>WebView2Fixed/LICENSE-MICROSOFT-WEBVIEW2.html</code>. Les conditions de redistribution et la procédure d’acquisition sont décrites dans [docs/webview-runtime.md](docs/webview-runtime.md). Les fichiers de licences présents dans le runtime doivent rester avec lui.
+Le paquet Windows x64 inclut Microsoft WebView2 Fixed Version **154.0.4258.53**, acquis le 3 octobre 2026 depuis la [page officielle de téléchargement Microsoft](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section). Microsoft décrit le [mode de distribution Fixed Version](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution#the-fixed-version-runtime-distribution-mode) et publie ses [conditions de licence](https://developer.microsoft.com/microsoft-edge/api/eula/webview2?locale=en-us&fixed=true).
 
-## Dépendances logicielles
+Le texte des conditions est livré avec le moteur sous **WebView2Fixed/LICENSE-MICROSOFT-WEBVIEW2.html** et parmi les notices sous **LICENCES/Microsoft/**. Les autres avis de licence fournis avec WebView2 sont conservés avec le runtime et dans le dossier des notices Microsoft. Ces conditions comportent des règles spécifiques à la redistribution et à l’utilisation ; consultez le texte Microsoft inclus avec le paquet. Cette notice n’est pas une certification juridique de conformité.
 
-Les dépendances JavaScript et Rust conservent les licences annoncées par leurs auteurs. Le paquet portable produit un répertoire <code>LICENCES/Dependances/</code> avec l’index et les notices collectés depuis les dépendances verrouillées. Consultez cet index dans l’archive distribuée pour connaître les composants recensés et leurs licences respectives.
+L’article 8 des conditions Microsoft demande d’informer l’utilisateur final que Microsoft Defender SmartScreen peut collecter et transmettre des données à Microsoft, sauf lorsque SmartScreen est désactivé. Consultez les conditions incluses et les paramètres de confidentialité de Windows pour les détails et les options disponibles.
 
+## Dépendances
+
+L’archive contient l’inventaire (**LICENCES/Dependances/index.md** et **LICENCES/Dependances/inventory.json**) et les textes de licence disponibles dans **LICENCES/Dependances/npm/** et **LICENCES/Dependances/cargo/**. Les dépendances Cargo de construction et de test sont aussi recensées ; leur présence n’indique pas qu’elles sont toutes intégrées à l’exécutable. Les droits et auteurs de chaque composant restent ceux de ses propres auteurs.

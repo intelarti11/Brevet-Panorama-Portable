@@ -1,36 +1,30 @@
-# Contribuer à l’édition sans Remplacements
+# Contribuer
 
-Merci de contribuer à Brevet Panorama Portable. Ce dépôt correspond à l’édition sans Remplacements ; l’édition complète avec ce module est conservée séparément.
+Ce dépôt contient l’édition Windows portable sans Remplacements. L’édition complète est maintenue dans un dépôt distinct.
 
 ## Signaler un problème
 
-Depuis l’onglet **Issues** du dépôt, indiquez :
+Utilisez les [Issues GitHub](https://github.com/intelarti11/Brevet-Panorama-Portable/issues). Indiquez la version, Windows, les étapes pour reproduire le problème et le résultat attendu et observé. N’ajoutez aucun nom d’élève, INE, export SIECLE, classeur de notes, base de données, sauvegarde ou export d’établissement ; reproduisez le problème avec des données fictives.
 
-- la version de l’application et la version de Windows ;
-- les étapes permettant de reproduire le problème ;
-- le résultat attendu et le résultat observé ;
-- si nécessaire, une capture d’écran ou un journal **anonymisé**.
+## Développer et vérifier
 
-N’ajoutez jamais de nom d’élève, INE, fichier SIECLE, classeur contenant des notes, base SQLite, sauvegarde ou export issu d’un établissement. Reproduisez le problème avec des données fictives.
+Prérequis pour la compilation Windows : Node.js 22, Rust stable, les outils C++ MSVC de Visual Studio Build Tools et le SDK Windows. Depuis la racine du dépôt, installez les dépendances et exécutez les vérifications utiles :
 
-## Proposer une modification
+    npm ci
+    npm test
+    npm run lint
+    npm run typecheck
+    npm run native:test
 
-Les propositions de code ciblent la branche principale <code>main</code>. Décrivez le besoin et les effets sur les imports, calculs, exports et sauvegardes. Gardez la modification compatible avec l’usage local hors ligne.
+Pour compiler l’interface, exécutez aussi **npm run build**. Vérifiez le parcours concerné lorsque vous modifiez un import, les sauvegardes ou le stockage local.
 
-Avant de soumettre une pull request, exécutez les vérifications utiles :
+## Construire l’application portable
 
-~~~powershell
-npm test
-npm run lint
-npm run typecheck
-npm run build
-npm run native:test
-~~~
+Lisez les [conditions Microsoft de WebView2 Fixed Version](https://developer.microsoft.com/microsoft-edge/api/eula/webview2?locale=en-us&fixed=true) et acceptez-les avant l’acquisition du moteur. Le script exige le paramètre explicite **-AcceptLicense** :
 
-Pour les changements touchant au stockage ou aux imports, vérifiez aussi un parcours natif avec des données fictives. Un build réussi ne suffit pas à prouver que l’application fonctionne dans son dossier portable.
+    powershell -NoProfile -ExecutionPolicy Bypass -File scripts/get-webview-runtime.ps1 -AcceptLicense
+    npm run portable
 
-## Données et licences
+La commande **npm run portable** compile l’application et prépare le dossier ainsi que l’archive ZIP dans **dist-portable/**. L’exécutable Windows utilise le moteur WebView2 inclus dans le paquet.
 
-Les données de la base et les sauvegardes restent à côté de l’application. Elles ne doivent jamais être ajoutées à Git ou jointes à une issue. Les nouvelles dépendances doivent être documentées par leurs notices de licence ; les polices et le runtime WebView2 ont des notices séparées. Consultez [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) et [docs/webview-runtime.md](docs/webview-runtime.md).
-
-Le code est sous licence AGPL-3.0-or-later. Les polices Noto Sans restent sous la licence SIL OFL 1.1.
+Le code est sous licence GNU AGPL version 3 ou ultérieure (**LICENSE**). Les polices Noto Sans, WebView2 et les dépendances conservent leurs notices propres ; voir [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) et les répertoires de licences du paquet.

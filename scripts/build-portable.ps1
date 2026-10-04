@@ -127,19 +127,12 @@ Get-ChildItem -LiteralPath $runtimeSource -Force | ForEach-Object {
     Copy-Item -LiteralPath $_.FullName -Destination $packagedRuntime -Recurse -Force
 }
 Copy-Item -LiteralPath $appLicense -Destination (Join-Path $packageDirectory 'LICENSE')
-foreach ($noticeName in @('README.md', 'THIRD_PARTY_NOTICES.md', 'CONTRIBUTING.md')) {
+foreach ($noticeName in @('LISEZ-MOI.txt', 'THIRD_PARTY_NOTICES.md')) {
     $noticeSource = Join-Path $repositoryRoot $noticeName
-    if (Test-Path -LiteralPath $noticeSource -PathType Leaf) {
-        Copy-Item -LiteralPath $noticeSource -Destination (Join-Path $packageDirectory $noticeName)
+    if (-not (Test-Path -LiteralPath $noticeSource -PathType Leaf)) {
+        throw "Notice requise introuvable : $noticeSource"
     }
-}
-$packagedDocs = Join-Path $packageDirectory 'docs'
-New-Item -ItemType Directory -Force -Path $packagedDocs | Out-Null
-foreach ($documentation in @('webview-runtime.md', 'distribution.md', 'portage.md', 'forge.md')) {
-    $documentationSource = Join-Path $repositoryRoot "docs\$documentation"
-    if (Test-Path -LiteralPath $documentationSource -PathType Leaf) {
-        Copy-Item -LiteralPath $documentationSource -Destination (Join-Path $packagedDocs $documentation)
-    }
+    Copy-Item -LiteralPath $noticeSource -Destination (Join-Path $packageDirectory $noticeName)
 }
 $fontLicense = Join-Path $repositoryRoot 'public\fonts\OFL.txt'
 if (-not (Test-Path -LiteralPath $fontLicense -PathType Leaf)) {
@@ -148,9 +141,6 @@ if (-not (Test-Path -LiteralPath $fontLicense -PathType Leaf)) {
 $fontLicenseDirectory = Join-Path $packageDirectory 'LICENCES\Polices'
 New-Item -ItemType Directory -Force -Path $fontLicenseDirectory | Out-Null
 Copy-Item -LiteralPath $fontLicense -Destination (Join-Path $fontLicenseDirectory 'OFL.txt')
-$publicFontNotices = Join-Path $packageDirectory 'public\fonts'
-New-Item -ItemType Directory -Force -Path $publicFontNotices | Out-Null
-Copy-Item -LiteralPath $fontLicense -Destination (Join-Path $publicFontNotices 'OFL.txt')
 & node (Join-Path $PSScriptRoot 'collect-dependency-licenses.mjs') (Join-Path $packageDirectory 'LICENCES\Dependances')
 if ($LASTEXITCODE -ne 0) {
     throw 'La collecte des licences des dépendances a échoué.'
@@ -171,18 +161,6 @@ foreach ($license in $runtimeLicenseFiles) {
 
 $dataDirectory = Join-Path $packageDirectory 'data'
 New-Item -ItemType Directory -Force -Path (Join-Path $dataDirectory 'backups') | Out-Null
-@'
-Brevet Panorama Portable - Version sans Remplacements
-
-Extrayez tout ce dossier sur un disque local, puis double-cliquez sur BrevetPanoramaPortable.exe. Le dossier doit rester inscriptible.
-
-L'application fonctionne hors ligne. La base SQLite et les sauvegardes sont créées dans data, à côté de l'exécutable. Fermez l'application avant de copier l'ensemble du dossier pour déplacer vos données; les sauvegardes sont dans data\backups. Les exports utilisent le dialogue de téléchargement de WebView2.
-
-Pour importer les élèves de troisième, utilisez ExportXML_ElevesSansAdresses.xml (SIECLE / BEE), directement ou dans son archive ZIP. Le module Remplacements n'est pas inclus.
-
-La licence du projet est incluse dans LICENSE. Les notices des composants sont dans THIRD_PARTY_NOTICES.md et LICENCES. Les conditions Microsoft du runtime WebView2 sont incluses dans LICENCES\Microsoft. SOURCE.txt identifie le code de cette version.
-'@ | Set-Content -LiteralPath (Join-Path $packageDirectory 'LISEZ-MOI.txt') -Encoding UTF8
-
 $archivePath = Join-Path $outputRoot "$packageName.zip"
 # Some upstream Cargo license files have Unix-epoch timestamps. ZIP timestamps
 # start in 1980; Windows PowerShell 5.1 rejects these instead of clamping them.
