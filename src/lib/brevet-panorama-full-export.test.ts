@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import * as XLSX from "xlsx-js-style";
+import * as XLSX from "./spreadsheet";
 
 import type { ProcessedStudentData } from "@/contexts/FilterContext";
 import type { BrevetPanoramaPdfStats } from "@/lib/brevet-panorama-export";

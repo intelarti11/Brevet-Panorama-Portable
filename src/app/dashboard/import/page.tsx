@@ -7,9 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import type { StudentData } from '@/lib/excel-types';
-import { studentDataSchema } from '@/lib/excel-types';
 import { Loader2, Import, AlertTriangle, CalendarDays, FileText, Trash2, CheckCircle, Database, Shapes } from 'lucide-react';
-import * as XLSX from 'xlsx-js-style';
+import * as XLSX from '@/lib/spreadsheet';
 
 import { getFirestore, collection, doc, withLocalTransaction } from '@/lib/local/store';
 import { httpsCallable } from '@/lib/local/functions';
@@ -27,7 +26,7 @@ import { isDataYearLocked, normalizeDataLockStatus } from '@/lib/data-lock';
 import {
   getMissingOfficialBrevetHeaders,
   getMissingOfficialBrevetRowValues,
-  isPost2026OfficialBrevet,
+  parseOfficialBrevetRow,
   readOfficialBrevetField,
 } from '@/lib/official-brevet-import';
 import { BREVET_DATA_UPDATED_EVENT } from '@/lib/brevet-data-events';
@@ -308,48 +307,7 @@ export default function ImportPage() {
               return;
             }
 
-            const studentInput: any = {
-              'anneeScolaireImportee': importYear,
-              'Série': readOfficialBrevetField(rawRow, 'serie'),
-              'Code Etablissement': readOfficialBrevetField(rawRow, 'codeEtablissement'),
-              'Libellé Etablissement': readOfficialBrevetField(rawRow, 'libelleEtablissement'),
-              'Commune Etablissement': readOfficialBrevetField(rawRow, 'communeEtablissement'),
-              'Division de classe': readOfficialBrevetField(rawRow, 'division'),
-              'Catégorie candidat': readOfficialBrevetField(rawRow, 'categorieCandidat'),
-              'Numéro Candidat': readOfficialBrevetField(rawRow, 'numeroCandidat'),
-              'INE': String(readOfficialBrevetField(rawRow, 'ine') ?? '').trim().toUpperCase(),
-              'Nom candidat': nom,
-              'Prénom candidat': prenom,
-              'Date de naissance': readOfficialBrevetField(rawRow, 'dateNaissance'),
-              'Résultat': readOfficialBrevetField(rawRow, 'resultat'),
-              'TOTAL GENERAL': readOfficialBrevetField(rawRow, 'totalGeneral'),
-              'Moyenne sur 20': readOfficialBrevetField(rawRow, 'moyenneFinale'),
-              noteControleContinu: readOfficialBrevetField(rawRow, 'moyenneControleContinu'),
-              noteEpreuvesTerminales: readOfficialBrevetField(rawRow, 'moyenneEpreuvesTerminales'),
-              baremeEpreuves: isPost2026OfficialBrevet(importYear) ? 'sur20' : 'legacy',
-              scoreFrancais: readOfficialBrevetField(rawRow, 'scoreFrancais'),
-              scoreMaths: readOfficialBrevetField(rawRow, 'scoreMaths'),
-              scoreHistoireGeo: readOfficialBrevetField(rawRow, 'scoreHistoireGeo'),
-              scoreEMC: readOfficialBrevetField(rawRow, 'scoreEMC'),
-              scoreSciences: readOfficialBrevetField(rawRow, 'scoreSciences'),
-              scoreFrancaisGrammaireComprehension: readOfficialBrevetField(rawRow, 'scoreFrancaisGrammaireComprehension'),
-              scoreFrancaisDictee: readOfficialBrevetField(rawRow, 'scoreFrancaisDictee'),
-              scoreFrancaisRedaction: readOfficialBrevetField(rawRow, 'scoreFrancaisRedaction'),
-              scoreSciencesSvt: readOfficialBrevetField(rawRow, 'scoreSciencesSvt'),
-              scoreSciencesPhysiqueChimie: readOfficialBrevetField(rawRow, 'scoreSciencesPhysiqueChimie'),
-              scoreSciencesTechnologie: readOfficialBrevetField(rawRow, 'scoreSciencesTechnologie'),
-              scoreOralDNB: readOfficialBrevetField(rawRow, 'scoreOralDNB'),
-              scoreLVE: readOfficialBrevetField(rawRow, 'scoreLVE'),
-              scoreArtsPlastiques: readOfficialBrevetField(rawRow, 'scoreArtsPlastiques'),
-              scoreEducationMusicale: readOfficialBrevetField(rawRow, 'scoreEducationMusicale'),
-              scoreEPS: readOfficialBrevetField(rawRow, 'scoreEPS'),
-              scorePhysiqueChimie: readOfficialBrevetField(rawRow, 'scorePhysiqueChimie'),
-              scoreSciencesVie: readOfficialBrevetField(rawRow, 'scoreSciencesVie'),
-              options: {},
-              rawRowData: rawRow,
-            };
-
-            const validationResult = studentDataSchema.safeParse(studentInput);
+            const validationResult = parseOfficialBrevetRow(rawRow, importYear);
             if (validationResult.success) {
                 if (validationResult.data.INE && validationResult.data['Nom candidat']) {
                     if (seenIne.has(validationResult.data.INE)) {

@@ -1,4 +1,4 @@
-import * as XLSX from "xlsx-js-style";
+import * as XLSX from "./spreadsheet";
 import type { BrevetExam } from "./brevet-blanc-lock";
 import { parseBrevetBlancImportRows, type BrevetBlancStudentImport } from "./brevet-blanc-import";
 import { readStudentTemplateMetadata, type StudentTemplateMetadata } from "./student-import-template";

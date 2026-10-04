@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { collection, query, where, getDocs } from '@/lib/local/store';
 import { db } from '@/lib/firebase';
-import * as XLSX from 'xlsx-js-style';
+import * as XLSX from '@/lib/spreadsheet';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

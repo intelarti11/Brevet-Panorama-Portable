@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import * as XLSX from "xlsx-js-style";
+import * as XLSX from "./spreadsheet";
 import {readBrevetBlancTemplateImport} from "./brevet-blanc-template-import";
 import {createStudentImportWorkbook} from "./student-import-template";
 

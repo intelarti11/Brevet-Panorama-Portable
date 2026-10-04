@@ -18,4 +18,6 @@ L’article 8 des conditions Microsoft demande d’informer l’utilisateur fina
 
 ## Dépendances
 
+Les fichiers Excel importés sont lus avec **SheetJS CE 0.20.3** (Apache-2.0), fourni dans les sources sous **vendor/xlsx-0.20.3.tgz**. **xlsx-js-style 1.2.0** sert uniquement à écrire les classeurs produits par l’application avec leurs styles ; son ancien lecteur n’est pas utilisé pour les fichiers importés. Les [avis SheetJS](https://cdn.sheetjs.com/advisories/) concernent la lecture des fichiers non fiables ; le détail et l’empreinte de l’archive sont dans **vendor/README.md**.
+
 L’archive contient l’inventaire (**LICENCES/Dependances/index.md** et **LICENCES/Dependances/inventory.json**) et les textes de licence disponibles dans **LICENCES/Dependances/npm/** et **LICENCES/Dependances/cargo/**. Les dépendances Cargo de construction et de test sont aussi recensées ; leur présence n’indique pas qu’elles sont toutes intégrées à l’exécutable. Les droits et auteurs de chaque composant restent ceux de ses propres auteurs.

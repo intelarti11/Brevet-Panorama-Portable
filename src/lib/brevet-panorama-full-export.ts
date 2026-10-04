@@ -1,5 +1,5 @@
 import autoTable from "jspdf-autotable";
-import * as XLSX from "xlsx-js-style";
+import * as XLSX from "./spreadsheet";
 
 import { createBrevetPanoramaPdfDoc } from "@/lib/brevet-panorama-export";
 import type { BrevetPanoramaReportData, BrevetPanoramaSubscore, BrevetPanoramaSubsubject } from "@/lib/brevet-panorama-report";
