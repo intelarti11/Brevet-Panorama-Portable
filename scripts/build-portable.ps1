@@ -184,6 +184,14 @@ La licence du projet est incluse dans LICENSE. Les notices des composants sont d
 '@ | Set-Content -LiteralPath (Join-Path $packageDirectory 'LISEZ-MOI.txt') -Encoding UTF8
 
 $archivePath = Join-Path $outputRoot "$packageName.zip"
+# Some upstream Cargo license files have Unix-epoch timestamps. ZIP timestamps
+# start in 1980; Windows PowerShell 5.1 rejects these instead of clamping them.
+$minimumZipTimestamp = [datetime]::new(1980, 1, 2, 12, 0, 0)
+Get-ChildItem -LiteralPath $packageDirectory -Recurse -File | ForEach-Object {
+    if ($_.LastWriteTime -lt $minimumZipTimestamp) {
+        $_.LastWriteTime = $minimumZipTimestamp
+    }
+}
 Compress-Archive -Path (Join-Path $packageDirectory '*') -DestinationPath $archivePath -CompressionLevel Optimal
 
 Write-Output "Paquet portable : $packageDirectory"
