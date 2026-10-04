@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import * as XLSX from "xlsx-js-style";
+import * as XLSX from "./spreadsheet";
 import { createStudentImportWorkbook, getBrevetBlancTemplateColumns, readStudentTemplateMetadata, validateDnbTemplateRow } from "./student-import-template";
 import { getMissingOfficialBrevetHeaders } from "./official-brevet-import";
 

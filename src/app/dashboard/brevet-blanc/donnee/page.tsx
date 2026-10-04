@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Search, ArrowUp, ArrowDown, ChevronsUpDown, SlidersHorizontal, Database, FileSpreadsheet } from 'lucide-react';
 import { BrevetBlancDetailModal } from '@/components/brevet-blanc-detail-modal';
-import * as XLSX from 'xlsx-js-style';
+import * as XLSX from '@/lib/spreadsheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { FullScreenLoader } from '@/components/ui/full-screen-loader';
 import { ErrorDisplay } from '@/components/ui/error-display';

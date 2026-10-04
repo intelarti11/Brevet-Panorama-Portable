@@ -1,4 +1,4 @@
-import * as XLSX from "xlsx-js-style";
+import * as XLSX from "./spreadsheet";
 import { getBrevetConfigForYear } from "./brevet-config";
 import type { BrevetExam } from "./brevet-blanc-lock";
 import type { StudentIdentity } from "./student-roster-types";

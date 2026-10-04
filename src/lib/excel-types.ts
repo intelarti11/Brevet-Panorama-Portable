@@ -1,5 +1,6 @@
 
 import { z } from 'zod';
+import { normalizeBrevetSex } from './brevet-sex';
 
 // Helper to convert various inputs to string or null
 const preprocessToStringOptional = (val: unknown): string | null => {
@@ -8,51 +9,48 @@ const preprocessToStringOptional = (val: unknown): string | null => {
   return strVal === '' ? null : strVal;
 };
 
-// Helper to parse score-like values (e.g., "X/Y" or just "X") to number or undefined
-const parseScoreValue = (valueWithMax: string | number | undefined): number | undefined => {
-  if (valueWithMax === undefined || valueWithMax === null || String(valueWithMax).trim() === '') return undefined;
-  const s = String(valueWithMax).split('/')[0].replace(',', '.').trim();
-  // Handle common non-numeric grade abbreviations
-  if (['AB', 'DI', 'NE', 'EA', 'DISP', 'ABS'].includes(s.toUpperCase())) return undefined;
-  const num = parseFloat(s);
-  return isNaN(num) ? undefined : num;
+// Only complete numeric values are accepted. Returning invalid input unchanged
+// lets Zod reject it, instead of silently turning it into a missing grade.
+const DECIMAL = '[+-]?(?:\\d+(?:[.,]\\d+)?|[.,]\\d+)';
+const SCORE_PATTERN = new RegExp(`^(${DECIMAL})(?:\\s*/\\s*(${DECIMAL}))?$`);
+const MARK_PATTERN = /^(ab|abs|absent|di|disp|dispense|ne|ea)(?:\s*\/\s*\d+(?:[.,]\d+)?)?$/;
+
+const parseScoreValue = (value: unknown, preserveMarks = false): unknown => {
+  if (value === undefined || value === null) return null;
+  if (typeof value === 'number') return value;
+  if (typeof value !== 'string') return value;
+  const raw = value.trim();
+  if (raw === '') return null;
+  const mark = MARK_PATTERN.exec(raw.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))?.[1];
+  if (mark) {
+    if (preserveMarks && ['ab', 'abs', 'absent'].includes(mark)) return 'Absent';
+    if (preserveMarks && ['di', 'disp', 'dispense'].includes(mark)) return 'Dispensé';
+    return null;
+  }
+  const match = SCORE_PATTERN.exec(raw);
+  if (!match || (match[2] !== undefined && Number(match[2].replace(',', '.')) <= 0)) return value;
+  return Number(match[1].replace(',', '.'));
 };
 
-// Helper to convert optional string/number input from Excel to a number or null
-const preprocessOptionalStringToNumber = (val: unknown): number | null => {
-  if (val === undefined || val === null) {
-    return null;
-  }
-  const strVal = String(val).trim();
-  if (strVal === '') {
-    return null;
-  }
-  const parsedNum = parseScoreValue(strVal);
-  return parsedNum === undefined ? null : parsedNum;
-};
+const optionalScoreSchema = (maximum?: number) => z.preprocess(
+  (value) => parseScoreValue(value),
+  (maximum === undefined
+    ? z.number({ error: 'Saisissez une note numérique valide.' }).min(0, 'La note doit être positive ou nulle.')
+    : z.number({ error: 'Saisissez une note numérique valide.' }).min(0, `Saisissez une note de 0 à ${maximum}.`).max(maximum, `Saisissez une note de 0 à ${maximum}.`))
+    .nullable().optional(),
+);
 
 /**
  * Les sous-notes du relevé DNB peuvent contenir la mention « Absent » (et,
  * selon la session, « Dispensé »). Contrairement aux scores agrégés, cette
- * information doit rester visible dans Firestore pour distinguer une absence
+ * information doit rester visible dans la base locale pour distinguer une absence
  * d'une valeur non fournie.
  */
-const preprocessRawDnbSubscore = (val: unknown): number | 'Absent' | 'Dispensé' | null => {
-  if (val === undefined || val === null) return null;
-  const raw = String(val).trim();
-  if (raw === '') return null;
-
-  const mark = raw.split('/')[0].trim().toLocaleLowerCase('fr-FR');
-  if (mark === 'abs' || mark === 'absent') return 'Absent';
-  if (mark === 'disp' || mark === 'dispense' || mark === 'dispensé') return 'Dispensé';
-
-  const parsed = parseScoreValue(raw);
-  return parsed === undefined ? null : parsed;
-};
-
-const rawDnbSubscoreSchema = z.preprocess(
-  preprocessRawDnbSubscore,
-  z.union([z.number(), z.literal('Absent'), z.literal('Dispensé')]).nullable().optional(),
+const rawDnbSubscoreSchema = (maximum: number) => z.preprocess(
+  (value) => parseScoreValue(value, true),
+  z.union([z.number().min(0).max(maximum), z.literal('Absent'), z.literal('Dispensé')], {
+    error: `Saisissez une note de 0 à ${maximum}, Absent ou Dispensé.`,
+  }).nullable().optional(),
 );
 
 
@@ -71,36 +69,56 @@ export const studentDataSchema = z.object({
   'Nom candidat': z.preprocess(preprocessToStringOptional, z.string().nullable().optional()),
   'Prénom candidat': z.preprocess(preprocessToStringOptional, z.string().nullable().optional()),
   'Date de naissance': z.preprocess(preprocessToStringOptional, z.string().nullable().optional()),
+  SEXE: z.preprocess((value) => {
+    const raw = preprocessToStringOptional(value);
+    return raw === null ? null : normalizeBrevetSex(raw) ?? raw;
+  }, z.enum(['f', 'g'], { error: 'Sexe invalide : saisissez F, G, M, féminin ou masculin.' }).nullable().optional()),
   'Résultat': z.preprocess(preprocessToStringOptional, z.string().nullable().optional()),
-  'TOTAL GENERAL': z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  'Moyenne sur 20': z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  noteControleContinu: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  noteEpreuvesTerminales: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
+  'TOTAL GENERAL': optionalScoreSchema(),
+  'Moyenne sur 20': optionalScoreSchema(20),
+  noteControleContinu: optionalScoreSchema(20),
+  noteEpreuvesTerminales: optionalScoreSchema(20),
   baremeEpreuves: z.enum(['legacy', 'sur20']).optional(),
 
   // Score fields retain camelCase names from original complex headers
-  scoreFrancais: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  scoreMaths: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  scoreHistoireGeo: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  scoreEMC: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  scoreSciences: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
+  scoreFrancais: optionalScoreSchema(),
+  scoreMaths: optionalScoreSchema(),
+  scoreHistoireGeo: optionalScoreSchema(),
+  scoreEMC: optionalScoreSchema(),
+  scoreSciences: optionalScoreSchema(),
   // Sous-notes brutes du nouveau format DNB 2026 (barèmes conservés).
-  scoreFrancaisGrammaireComprehension: rawDnbSubscoreSchema,
-  scoreFrancaisDictee: rawDnbSubscoreSchema,
-  scoreFrancaisRedaction: rawDnbSubscoreSchema,
-  scoreSciencesSvt: rawDnbSubscoreSchema,
-  scoreSciencesPhysiqueChimie: rawDnbSubscoreSchema,
-  scoreSciencesTechnologie: rawDnbSubscoreSchema,
-  scoreOralDNB: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  scoreLVE: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  scoreArtsPlastiques: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  scoreEducationMusicale: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  scoreEPS: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  scorePhysiqueChimie: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
-  scoreSciencesVie: z.preprocess(preprocessOptionalStringToNumber, z.number().nullable().optional()),
+  scoreFrancaisGrammaireComprehension: rawDnbSubscoreSchema(50),
+  scoreFrancaisDictee: rawDnbSubscoreSchema(10),
+  scoreFrancaisRedaction: rawDnbSubscoreSchema(40),
+  scoreSciencesSvt: rawDnbSubscoreSchema(10),
+  scoreSciencesPhysiqueChimie: rawDnbSubscoreSchema(10),
+  scoreSciencesTechnologie: rawDnbSubscoreSchema(10),
+  scoreOralDNB: optionalScoreSchema(),
+  scoreLVE: optionalScoreSchema(),
+  scoreArtsPlastiques: optionalScoreSchema(),
+  scoreEducationMusicale: optionalScoreSchema(),
+  scoreEPS: optionalScoreSchema(),
+  scorePhysiqueChimie: optionalScoreSchema(),
+  scoreSciencesVie: optionalScoreSchema(),
 
   options: z.record(z.string(), z.unknown()).optional(), // This stores any other columns
   rawRowData: z.any().optional(), // Store the original raw row for debugging or future use
+}).superRefine((student, ctx) => {
+  const outOf20 = student.baremeEpreuves === 'sur20'
+    || (student.baremeEpreuves !== 'legacy' && Number(student.anneeScolaireImportee) >= 2026);
+  // Match the scales used when FilterContext converts historical grades to /20.
+  const legacyMaxima = {
+    scoreFrancais: 100, scoreMaths: 100, scoreHistoireGeo: 50, scoreEMC: 10,
+    scoreSciences: 50, scoreOralDNB: 100, scoreLVE: 50, scoreArtsPlastiques: 50,
+    scoreEducationMusicale: 50, scoreEPS: 100, scorePhysiqueChimie: 50, scoreSciencesVie: 50,
+  } as const;
+  for (const [field, legacyMaximum] of Object.entries(legacyMaxima)) {
+    const value = student[field as keyof typeof legacyMaxima];
+    const maximum = outOf20 ? 20 : legacyMaximum;
+    if (typeof value === 'number' && value > maximum) {
+      ctx.addIssue({ code: 'custom', path: [field], message: `Saisissez une note de 0 à ${maximum}.` });
+    }
+  }
 });
 
 export type StudentData = z.infer<typeof studentDataSchema>;

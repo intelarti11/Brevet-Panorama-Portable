@@ -1,3 +1,5 @@
+import { studentDataSchema } from "./excel-types";
+
 export type OfficialBrevetField =
   | "serie"
   | "codeEtablissement"
@@ -10,6 +12,7 @@ export type OfficialBrevetField =
   | "nom"
   | "prenom"
   | "dateNaissance"
+  | "sexe"
   | "resultat"
   | "totalGeneral"
   | "moyenneFinale"
@@ -46,6 +49,7 @@ const FIELD_ALIASES: Record<OfficialBrevetField, readonly string[]> = {
   nom: ["Nom candidat", "Nom", "Nom de famille"],
   prenom: ["Prénom candidat", "Prénom", "Prenom", "Prénom(s)", "Prenom(s)"],
   dateNaissance: ["Date de naissance"],
+  sexe: ["Sexe", "Sex"],
   resultat: ["Résultat", "Resultat", "Décision", "Decision"],
   totalGeneral: ["TOTAL GENERAL", "Total général", "Total general"],
   moyenneFinale: ["Moyenne sur 20", "Note finale /20", "Note finale"],
@@ -156,6 +160,7 @@ const FIELD_LABELS: Record<OfficialBrevetField, string> = {
   nom: "Nom",
   prenom: "Prénom(s)",
   dateNaissance: "Date de naissance",
+  sexe: "Sexe",
   resultat: "Décision",
   totalGeneral: "Total général",
   moyenneFinale: "Note finale /20",
@@ -249,3 +254,47 @@ export const isPost2026OfficialBrevet = (importYear: string | number): boolean =
   const numericYear = typeof importYear === "number" ? importYear : Number.parseInt(importYear, 10);
   return Number.isFinite(numericYear) && numericYear >= 2026;
 };
+
+/** The same mapping and validation apply to templates and ordinary workbooks. */
+export const parseOfficialBrevetRow = (row: Record<string, unknown>, importYear: string) =>
+  studentDataSchema.safeParse({
+    anneeScolaireImportee: importYear,
+    'Série': readOfficialBrevetField(row, 'serie'),
+    'Code Etablissement': readOfficialBrevetField(row, 'codeEtablissement'),
+    'Libellé Etablissement': readOfficialBrevetField(row, 'libelleEtablissement'),
+    'Commune Etablissement': readOfficialBrevetField(row, 'communeEtablissement'),
+    'Division de classe': readOfficialBrevetField(row, 'division'),
+    'Catégorie candidat': readOfficialBrevetField(row, 'categorieCandidat'),
+    'Numéro Candidat': readOfficialBrevetField(row, 'numeroCandidat'),
+    INE: String(readOfficialBrevetField(row, 'ine') ?? '').trim().toUpperCase(),
+    'Nom candidat': readOfficialBrevetField(row, 'nom'),
+    'Prénom candidat': readOfficialBrevetField(row, 'prenom'),
+    'Date de naissance': readOfficialBrevetField(row, 'dateNaissance'),
+    SEXE: readOfficialBrevetField(row, 'sexe'),
+    'Résultat': readOfficialBrevetField(row, 'resultat'),
+    'TOTAL GENERAL': readOfficialBrevetField(row, 'totalGeneral'),
+    'Moyenne sur 20': readOfficialBrevetField(row, 'moyenneFinale'),
+    noteControleContinu: readOfficialBrevetField(row, 'moyenneControleContinu'),
+    noteEpreuvesTerminales: readOfficialBrevetField(row, 'moyenneEpreuvesTerminales'),
+    baremeEpreuves: isPost2026OfficialBrevet(importYear) ? 'sur20' : 'legacy',
+    scoreFrancais: readOfficialBrevetField(row, 'scoreFrancais'),
+    scoreMaths: readOfficialBrevetField(row, 'scoreMaths'),
+    scoreHistoireGeo: readOfficialBrevetField(row, 'scoreHistoireGeo'),
+    scoreEMC: readOfficialBrevetField(row, 'scoreEMC'),
+    scoreSciences: readOfficialBrevetField(row, 'scoreSciences'),
+    scoreFrancaisGrammaireComprehension: readOfficialBrevetField(row, 'scoreFrancaisGrammaireComprehension'),
+    scoreFrancaisDictee: readOfficialBrevetField(row, 'scoreFrancaisDictee'),
+    scoreFrancaisRedaction: readOfficialBrevetField(row, 'scoreFrancaisRedaction'),
+    scoreSciencesSvt: readOfficialBrevetField(row, 'scoreSciencesSvt'),
+    scoreSciencesPhysiqueChimie: readOfficialBrevetField(row, 'scoreSciencesPhysiqueChimie'),
+    scoreSciencesTechnologie: readOfficialBrevetField(row, 'scoreSciencesTechnologie'),
+    scoreOralDNB: readOfficialBrevetField(row, 'scoreOralDNB'),
+    scoreLVE: readOfficialBrevetField(row, 'scoreLVE'),
+    scoreArtsPlastiques: readOfficialBrevetField(row, 'scoreArtsPlastiques'),
+    scoreEducationMusicale: readOfficialBrevetField(row, 'scoreEducationMusicale'),
+    scoreEPS: readOfficialBrevetField(row, 'scoreEPS'),
+    scorePhysiqueChimie: readOfficialBrevetField(row, 'scorePhysiqueChimie'),
+    scoreSciencesVie: readOfficialBrevetField(row, 'scoreSciencesVie'),
+    options: {},
+    rawRowData: row,
+  });

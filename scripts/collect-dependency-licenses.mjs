@@ -42,7 +42,10 @@ for (const [directory, entry] of Object.entries(lock.packages)) {
   const target = join(destination, "npm", safeName(`${name}-${version}`));
   const license = typeof manifest.license === "string" ? manifest.license : manifest.license?.type || entry.license || "Voir les sources";
   const files = copyNotices(source, target);
-  inventory.push({ ecosystem: "npm", name, version, license, source: `https://www.npmjs.com/package/${name}/v/${version}`, files });
+  const sourceUrl = name === "xlsx" && entry.resolved?.startsWith("file:vendor/")
+    ? `https://cdn.sheetjs.com/xlsx-${version}/xlsx-${version}.tgz`
+    : `https://www.npmjs.com/package/${name}/v/${version}`;
+  inventory.push({ ecosystem: "npm", name, version, license, source: sourceUrl, files });
 }
 
 const metadata = JSON.parse(execFileSync("cargo", ["metadata", "--manifest-path", join(root, "src-tauri/Cargo.toml"), "--format-version", "1", "--locked", "--filter-platform", "x86_64-pc-windows-msvc"], { cwd: root, encoding: "utf8", maxBuffer: 30 * 1024 * 1024 }));

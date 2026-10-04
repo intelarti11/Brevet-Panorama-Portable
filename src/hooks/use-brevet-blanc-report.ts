@@ -53,8 +53,8 @@ export const useBrevetBlancReport = (config: ReportConfig | null, students: Stud
 
     const comparisonChartData = brevetConfig.subjects.map(m => ({
         name: m,
-        bb1: statsBB1.subjectAverages[m] ? (statsBB1.subjectAverages[m]! / brevetConfig.maxScores[m]) * 20 : undefined,
-        bb2: statsBB2.subjectAverages[m] ? (statsBB2.subjectAverages[m]! / brevetConfig.maxScores[m]) * 20 : undefined,
+        bb1: statsBB1.subjectAverages[m] !== undefined ? (statsBB1.subjectAverages[m] / brevetConfig.maxScores[m]) * 20 : undefined,
+        bb2: statsBB2.subjectAverages[m] !== undefined ? (statsBB2.subjectAverages[m] / brevetConfig.maxScores[m]) * 20 : undefined,
     }));
 
     return { studentCount: filteredStudents.length, filteredStudents, config, statsBB1, statsBB2, comparisonChartData };

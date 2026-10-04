@@ -1,4 +1,4 @@
-import * as XLSX from "xlsx-js-style";
+import * as XLSX from "./spreadsheet";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {strFromU8, strToU8, unzipSync, zipSync} from "fflate";
