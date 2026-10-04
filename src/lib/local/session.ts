@@ -14,7 +14,7 @@ const user: User = {
   email: "local-user@localhost",
   displayName: "Utilisateur local",
   getIdToken: async () => "local",
-  getIdTokenResult: async () => ({ claims: { admin: true, replacementImporter: true } }),
+  getIdTokenResult: async () => ({ claims: { admin: true } }),
 };
 const session = { currentUser: user };
 export const auth = session;

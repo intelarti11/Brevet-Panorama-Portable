@@ -115,7 +115,8 @@ if (-not (Test-Path -LiteralPath $executable -PathType Leaf)) {
 
 New-Item -ItemType Directory -Force -Path $outputRoot | Out-Null
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss-fff'
-$packageName = "BrevetPanoramaPortable-$stamp"
+$appVersion = (Get-Content -LiteralPath (Join-Path $repositoryRoot 'package.json') -Raw | ConvertFrom-Json).version
+$packageName = "BrevetPanoramaPortable-$appVersion-SansRemplacements-$stamp"
 $packageDirectory = Join-Path $outputRoot $packageName
 New-Item -ItemType Directory -Path $packageDirectory | Out-Null
 
@@ -139,11 +140,13 @@ foreach ($license in $runtimeLicenseFiles) {
 $dataDirectory = Join-Path $packageDirectory 'data'
 New-Item -ItemType Directory -Force -Path (Join-Path $dataDirectory 'backups') | Out-Null
 @'
-Brevet Panorama Portable
+Brevet Panorama Portable - Version sans Remplacements
 
 Extrayez tout ce dossier sur un disque local, puis double-cliquez sur BrevetPanoramaPortable.exe. Le dossier doit rester inscriptible.
 
 L'application fonctionne hors ligne. La base SQLite et les sauvegardes sont créées dans data, à côté de l'exécutable. Fermez l'application avant de copier l'ensemble du dossier pour déplacer vos données; les sauvegardes sont dans data\backups. Les exports utilisent le dialogue de téléchargement de WebView2.
+
+Pour importer les élèves de troisième, utilisez ExportXML_ElevesSansAdresses.xml (SIECLE / BEE), directement ou dans son archive ZIP. Le module Remplacements n'est pas inclus.
 
 La licence du projet est incluse dans LICENSE. Les conditions Microsoft du runtime WebView2 sont incluses dans LICENCES\Microsoft.
 '@ | Set-Content -LiteralPath (Join-Path $packageDirectory 'LISEZ-MOI.txt') -Encoding UTF8

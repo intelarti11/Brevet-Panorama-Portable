@@ -15,7 +15,12 @@ Le paquet portable inclut WebView2 Fixed Version et une base initialement vide.
 Ne jamais ajouter de donnees reelles d'eleves, exports d'etablissement,
 base SQLite, sauvegardes ou identifiants au depot. Tests : donnees fictives.
 Les identites sont importees depuis SIECLE ZIP/XML, uniquement les classes de 3e.
+Le fichier attendu est ExportXML_ElevesSansAdresses.xml, directement ou dans son ZIP.
 Les modeles et imports XLSX brevet blanc et DNB sont distincts.
+
+Version 0.1.1 : module Remplacements retire (pages, imports CSV/ICS et exports).
+Les anciennes sauvegardes restent compatibles. Le backend conserve seulement
+leurs donnees historiques inactives; les collections retirees sont refusees par IPC.
 
 Verifications : npm test, npm run lint, npm run typecheck, npm run build,
 cargo test --manifest-path src-tauri/Cargo.toml, puis application native reelle.

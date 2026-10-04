@@ -5,7 +5,7 @@ import { BREVET_DATA_UPDATED_EVENT } from "../brevet-data-events";
 // persistantes passent par les commandes Rust et leur transaction SQLite.
 export type DocumentData = Record<string, any>;
 export const db = Object.freeze({ edition: "portable" });
-export const COLLECTIONS = ["brevetResults", "BrevetBlanc", "pixResults", "appSettings", "replacementWeeks", "replacementMeta"] as const;
+export const COLLECTIONS = ["brevetResults", "BrevetBlanc", "pixResults", "appSettings"] as const;
 export interface DocumentReference { collection: string; id: string }
 export interface CollectionReference { collection: string; conditions: QueryConstraint[] }
 export interface QueryConstraint { field: string; operator: "=="; value: unknown }

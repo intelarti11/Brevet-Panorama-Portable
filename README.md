@@ -3,6 +3,9 @@
 Version Windows x64, locale et mono-utilisateur de
 [Brevet Panorama](https://github.com/intelarti11/Brevet-Panorama).
 
+La version 0.1.1 ne contient pas le module Remplacements.
+Les deux editions peuvent fonctionner dans des dossiers separes.
+
 La premiere version portable est construite et ses principaux parcours ont ete
 verifies dans l'application Windows. Ce depot contient les sources, sans donnees
 d'eleves. Aucune connexion Firebase n'est necessaire.
@@ -24,10 +27,11 @@ on peut creer une sauvegarde et restaurer une sauvegarde existante. Les vingt
 plus recentes sont conservees. Fermer l'application avant de deplacer ou copier
 l'ensemble du dossier; les donnees et sauvegardes suivent alors le programme.
 
-Les identites viennent de l'export officiel SIECLE ZIP/XML, en ne retenant que
+Les identites viennent du fichier officiel SIECLE `ExportXML_ElevesSansAdresses.xml`
+(directement ou dans son ZIP), en ne retenant que
 les eleves de 3e. Les modeles XLSX pre-remplis et imports des notes du brevet
 blanc (BB1 ou BB2) et du DNB sont separes. Les analyses, notes manuelles,
-verrous, PIX, remplacements et exports PDF/XLSX sont disponibles localement.
+verrous, PIX et exports PDF/XLSX sont disponibles localement.
 
 Les essais utilisent uniquement des donnees fictives. Un essai sur un autre PC
 Windows sans WebView2 deja installe reste a effectuer avant diffusion large.

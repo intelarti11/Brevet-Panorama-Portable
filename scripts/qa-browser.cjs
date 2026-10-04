@@ -268,7 +268,7 @@ async function main() {
   const seed = {
     revision: 0,
     collections: {
-      brevetResults: {}, BrevetBlanc: {}, pixResults: {}, appSettings: {}, replacementWeeks: {}, replacementMeta: {},
+      brevetResults: {}, BrevetBlanc: {}, pixResults: {}, appSettings: {},
     },
     backups: [],
   };

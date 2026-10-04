@@ -20,14 +20,10 @@ const MAX_BATCH_BYTES: usize = 10 * 1024 * 1024;
 const MAX_RECORD_BYTES: usize = 2 * 1024 * 1024;
 const MAX_BACKUPS: usize = 20;
 const DELETE_SENTINEL: &str = "__panoramaDelete";
-const ALLOWED_COLLECTIONS: &[&str] = &[
-    "brevetResults",
-    "BrevetBlanc",
-    "pixResults",
-    "appSettings",
-    "replacementWeeks",
-    "replacementMeta",
-];
+const ALLOWED_COLLECTIONS: &[&str] = &["brevetResults", "BrevetBlanc", "pixResults", "appSettings"];
+// Preserve opaque legacy records when restoring backups made by version 0.1.0.
+// These collections cannot be accessed or modified through the active IPC API.
+const LEGACY_BACKUP_COLLECTIONS: &[&str] = &["replacementWeeks", "replacementMeta"];
 
 static BACKUP_SEQUENCE: AtomicU64 = AtomicU64::new(0);
 
@@ -484,7 +480,9 @@ impl LocalDatabase {
             let collection: String = row.get(0).map_err(|error| error.to_string())?;
             let id: String = row.get(1).map_err(|error| error.to_string())?;
             let data: String = row.get(2).map_err(|error| error.to_string())?;
-            validate_collection(&collection)?;
+            if !LEGACY_BACKUP_COLLECTIONS.contains(&collection.as_str()) {
+                validate_collection(&collection)?;
+            }
             validate_id(&id)?;
             let parsed: Value = serde_json::from_str(&data).map_err(|error| error.to_string())?;
             validate_record_data(&parsed)?;
@@ -1132,7 +1130,7 @@ mod tests {
             .commit(
                 vec![operation(
                     "set",
-                    "replacementMeta",
+                    "appSettings",
                     "term",
                     Some(json!({"week": 5})),
                     None,
@@ -1150,13 +1148,81 @@ mod tests {
         assert!(database.restore(invalid_name).is_err());
         assert_eq!(database.revision().unwrap(), 1);
         assert_eq!(
-            database
-                .get("replacementMeta", "term")
-                .unwrap()
-                .unwrap()
-                .data,
+            database.get("appSettings", "term").unwrap().unwrap().data,
             json!({"week": 5})
         );
+    }
+
+    #[test]
+    fn retired_collections_are_inaccessible_but_legacy_backups_restore() {
+        let (_directory, mut database) = database();
+        database
+            .commit(
+                vec![operation(
+                    "set",
+                    "BrevetBlanc",
+                    "student-fictif",
+                    Some(json!({"NOM": "FICTIF", "notes": {"Français": {"bb1": 15}}})),
+                    None,
+                )],
+                Some(0),
+            )
+            .unwrap();
+        // Simulate a valid database produced by the earlier full edition.
+        for collection in LEGACY_BACKUP_COLLECTIONS {
+            database
+                .connection
+                .execute(
+                    "INSERT INTO records(collection, id, data) VALUES (?1, 'legacy', ?2)",
+                    params![collection, json!({"fictif": true}).to_string()],
+                )
+                .unwrap();
+            assert!(database.list(collection).is_err());
+            assert!(database.get(collection, "legacy").is_err());
+            assert!(database
+                .commit(
+                    vec![operation("delete", collection, "legacy", None, None)],
+                    None,
+                )
+                .is_err());
+        }
+        let backup = database.backup().unwrap();
+        let backup_name = Path::new(&backup)
+            .file_name()
+            .unwrap()
+            .to_str()
+            .unwrap()
+            .to_string();
+        database
+            .commit(
+                vec![operation(
+                    "delete",
+                    "BrevetBlanc",
+                    "student-fictif",
+                    None,
+                    None,
+                )],
+                None,
+            )
+            .unwrap();
+        database.restore(&backup_name).unwrap();
+        assert_eq!(
+            database
+                .get("BrevetBlanc", "student-fictif")
+                .unwrap()
+                .unwrap()
+                .data["notes"]["Français"]["bb1"],
+            15
+        );
+        let legacy_count: i64 = database
+            .connection
+            .query_row(
+                "SELECT count(*) FROM records WHERE collection IN ('replacementWeeks', 'replacementMeta')",
+                [],
+                |row| row.get(0),
+            )
+            .unwrap();
+        assert_eq!(legacy_count, 2);
     }
 
     #[test]

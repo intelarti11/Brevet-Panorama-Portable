@@ -4,7 +4,7 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Database, LayoutGrid, PanelLeft, FileUp, Filter, AlertTriangle, CalendarRange, ShieldCheck, ClipboardEdit, Edit3, Eye, Users, GraduationCap, Shapes, BarChart2, User, FilePenLine, ShieldAlert, FileSearch, LockKeyhole } from 'lucide-react';
+import { Database, LayoutGrid, PanelLeft, FileUp, Filter, AlertTriangle, CalendarRange, ShieldCheck, ClipboardEdit, Edit3, Eye, GraduationCap, Shapes, BarChart2, User, FilePenLine, ShieldAlert, FileSearch, LockKeyhole } from 'lucide-react';
 import * as React from 'react';
 
 import Logo from '@/components/logo';
@@ -147,7 +147,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [brevetBlancOpen, setBrevetBlancOpen] = React.useState(false);
   const [adminOpen, setAdminOpen] = React.useState(false);
   const [pixOpen, setPixOpen] = React.useState(false);
-  const [replacementOpen, setReplacementOpen] = React.useState(false);
 
   React.useEffect(() => {
     const isBrevetPath = ['/dashboard', '/dashboard/panorama', '/dashboard/pluriannuel', '/dashboard/donnee'].includes(pathname);
@@ -158,9 +157,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
     const isPixPath = pathname.startsWith('/dashboard/pix');
     setPixOpen(isPixPath);
-
-    const isReplacementPath = pathname.startsWith('/dashboard/remplacements');
-    setReplacementOpen(isReplacementPath);
 
     const isAdminPath = pathname.startsWith('/dashboard/admin') || pathname === '/dashboard/import';
     setAdminOpen(isAdminPath);
@@ -330,43 +326,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       >
                         <User />
                         <span>Profil Élève</span>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  </SidebarMenuSub>
-                )}
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={replacementOpen}
-                  tooltip={{ children: "Remplacements", side: "right", align: "center" }}
-                >
-                  <Link href="/dashboard/remplacements">
-                    <div className="flex items-center gap-2">
-                      <FileSearch />
-                      <span>Remplacements</span>
-                    </div>
-                  </Link>
-                </SidebarMenuButton>
-                {replacementOpen && (
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton
-                        href="/dashboard/remplacements"
-                        isActive={pathname === '/dashboard/remplacements'}
-                      >
-                        <Users />
-                        <span>Consultation</span>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton
-                        href="/dashboard/remplacements/import"
-                        isActive={pathname === '/dashboard/remplacements/import'}
-                      >
-                        <FileUp />
-                        <span>Importer les remplacements</span>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   </SidebarMenuSub>

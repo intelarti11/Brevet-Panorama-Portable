@@ -58,31 +58,13 @@ let browser;
       }
     }
   }
-  const routes = ['donnee', 'pluriannuel', 'brevet-blanc/donnee', 'brevet-blanc/pluriannuel', 'brevet-blanc/voir-notes', 'pix', 'pix/donnees', 'pix/profil', 'admin/cas-par-cas', 'admin/divisions', 'admin/doublons', 'remplacements', 'remplacements/import'];
+  const routes = ['donnee', 'pluriannuel', 'brevet-blanc/donnee', 'brevet-blanc/pluriannuel', 'brevet-blanc/voir-notes', 'pix', 'pix/donnees', 'pix/profil', 'admin/cas-par-cas', 'admin/divisions', 'admin/doublons'];
   for (const route of routes) {
     await navigate(route);
     const heading = (await page.locator('main').last().innerText()).split('\n').filter(Boolean).slice(0, 4).join(' | ');
     assert.ok(heading.length > 0);
     assert.doesNotMatch(await page.locator('main').last().innerText(), /Application error|Internal Server Error|Accès refusé/);
     reports.push({ route, heading });
-  }
-  const backup = await invoke('local_backup');
-  const baseline = JSON.parse(fs.readFileSync('tmp/native-persistence-expected.json', 'utf8'));
-  try {
-    await page.getByRole('textbox', { name: 'Tableau des remplacements EDT / Pronote' }).fill('Date\tJour\tDébut\tClasse\tProfesseur\tDurée\tMatière\tSalle\n05/10/2026\tlundi\t08h00\t3E TEST\tPROF FICTIF\t1h00\tMathématiques\tA01');
-    await page.getByRole('button', { name: 'Analyser le texte collé' }).click();
-    await page.getByRole('button', { name: 'Importer les remplacements', exact: true }).click();
-    await page.getByRole('status').filter({ hasText: 'Import terminé' }).first().waitFor();
-    const weeks = await invoke('local_list', { collection: 'replacementWeeks' });
-    assert.equal(weeks.length, 1);
-    assert.equal(weeks[0].data.slots.length, 1);
-    assert.equal(weeks[0].data.slots[0].absentProfessor, 'PROF FICTIF');
-    reports.push({ replacementImport: 'persisted', week: weeks[0].id });
-    await navigate('remplacements');
-    await page.screenshot({ path: path.join(artifacts, 'remplacements.png'), fullPage: true });
-  } finally {
-    await invoke('local_restore', { name: path.basename(backup.path) });
-    for (const [collection, records] of Object.entries(baseline)) assert.deepEqual(await invoke('local_list', { collection }), records);
   }
   assert.deepEqual(errors, []);
   assert.deepEqual(external, []);

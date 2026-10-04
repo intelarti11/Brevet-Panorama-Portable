@@ -6,12 +6,42 @@
 - Un seul utilisateur local, toutes les fonctions metier accessibles.
 - Aucun appel Firebase, service externe ou police distante au runtime.
 - SQLite, profil WebView et sauvegardes dans le dossier du programme.
-- Imports SIECLE 3e, modeles et notes BB1/BB2, DNB, PIX et remplacements.
+- Imports SIECLE 3e, modeles et notes BB1/BB2, DNB et PIX.
 - Panoramas, comparaisons pluriannuelles, filtres et exports PDF/XLSX.
 - Correction des fiches, divisions, doublons et verrous de saisie.
 - Sauvegarde/restauration coherente et protection contre les ecritures partielles.
 
-## Validation du 3 octobre 2026
+## Version 0.1.1 sans Remplacements — 4 octobre 2026
+
+Les pages de consultation et d'import des remplacements, leur navigation,
+les traitements CSV/ICS et l'export de semainier sont retires. L'aide SIECLE
+nomme explicitement `ExportXML_ElevesSansAdresses.xml`, directement ou dans son ZIP.
+
+Le stockage actif se limite aux quatre collections des eleves, resultats et
+parametres. Les anciennes sauvegardes 0.1.0 restent restaurables sans perdre
+les notes; leurs enregistrements historiques du module retire sont conserves
+sans acces depuis l'application ou les commandes IPC.
+
+Validation de cette edition : 73 tests frontend et 10 tests Rust reussis,
+lint, typage, export statique (23 pages) et construction native reussis.
+Les onze etapes du parcours natif SIECLE/BB1/BB2/DNB, la saisie, les verrous,
+les sauvegardes et les exports PDF/XLSX passent. La revue de l'ecran d'import
+1280 x 820 confirme le nom du fichier et l'absence du menu retire, sans erreur
+de console. Ses collections sont aussi refusees par les commandes IPC.
+
+Paquet 0.1.1 :
+`dist-portable/BrevetPanoramaPortable-0.1.1-SansRemplacements-20261004-112506-691.zip`,
+315 227 867 octets. SHA-256 :
+`fa656aa81a2768d6ea0f2f7ee885bc80649e4e893b8a21573c5bb1aa6f662638`.
+Son executable est identique a celui des essais. Le ZIP comprend le runtime
+et les licences, sans fichier SQLite ni donnees d'eleves.
+
+La fenetre native de test a ete fermee normalement. Le relancement automatise
+a ete refuse par le controle automatique, sans motif plus precis : la reouverture
+de l'application 0.1.1 n'a pas ete verifiee. Les tests Rust de persistance et de
+restauration passent; le deplacement complet a ete teste sur la version 0.1.0.
+
+## Validation de la version 0.1.0 — 3 octobre 2026
 
 - [x] Tests des regles reprises et adaptateurs locaux : 73 tests frontend.
 - [x] Tests Rust : 9 tests, dont transactions, persistance et restauration invalide.
@@ -42,7 +72,7 @@ Les rapports locaux sont ignores par Git : `tmp/qa/qa-summary.json`,
 `scripts/`. Les jeux de donnees sont fictifs; aucun export d'etablissement n'a
 ete ajoute au depot ni au paquet.
 
-## Paquet verifie
+## Paquet 0.1.0 verifie
 
 `dist-portable/BrevetPanoramaPortable-20261003-201513-238.zip`, 315 131 983 octets.
 

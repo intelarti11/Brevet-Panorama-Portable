@@ -69,7 +69,7 @@ export function OfficialStudentImport({ year, disabled = false, disabledReason, 
     <Card className="shadow-lg rounded-lg">
       <CardHeader>
         <CardTitle className="text-xl flex items-center gap-2"><Users className="size-5 shrink-0 text-primary" aria-hidden="true" /> Élèves depuis la base officielle de l’établissement</CardTitle>
-        <CardDescription>Importez l’export élèves SIECLE / BEE (.zip ou .xml) pour reprendre les noms, prénoms, INE et classes des élèves de troisième. Les élèves seront rattachés à l’année du brevet choisie ci-dessus, même si l’année scolaire de l’export commence l’année précédente.</CardDescription>
+        <CardDescription>Importez le fichier <strong>ExportXML_ElevesSansAdresses.xml</strong> de SIECLE / BEE, directement ou dans son archive .zip, pour reprendre les noms, prénoms, INE et classes des élèves de troisième. Les élèves seront rattachés à l’année du brevet choisie ci-dessus, même si l’année scolaire de l’export commence l’année précédente.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
         <div className="flex flex-col gap-3">

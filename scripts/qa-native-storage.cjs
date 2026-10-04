@@ -12,18 +12,18 @@ const { buildSync } = require('esbuild');
   const invoke = (command, args = {}) => page.evaluate(({ command, args }) => window.__TAURI_INTERNALS__.invoke(command, args), { command, args });
   const info = await invoke('local_info');
   assert.match(info.databasePath, /[\\/]tmp[\\/]native-test[\\/]/, 'Base native de test uniquement');
-  const names = ['BrevetBlanc', 'brevetResults', 'pixResults', 'appSettings', 'replacementWeeks', 'replacementMeta'];
+  const names = ['BrevetBlanc', 'brevetResults', 'pixResults', 'appSettings'];
   const snapshot = async () => Object.fromEntries(await Promise.all(names.map(async (name) => [name, await invoke('local_list', { collection: name })])));
   const initial = await snapshot();
   const safetyBackup = await invoke('local_backup');
   const backupName = path.basename(safetyBackup.path);
   const initialRevision = (await invoke('local_info')).revision;
   await assert.rejects(invoke('local_commit', { operations: [
-    { type: 'set', collection: 'replacementMeta', id: 'qa-rollback', data: { fictif: true } },
-    { type: 'update', collection: 'replacementMeta', id: 'qa-absent', data: { invalid: true } },
+    { type: 'set', collection: 'appSettings', id: 'qa-rollback', data: { fictif: true } },
+    { type: 'update', collection: 'appSettings', id: 'qa-absent', data: { invalid: true } },
   ] }));
   assert.equal((await invoke('local_info')).revision, initialRevision);
-  assert.equal(await invoke('local_get', { collection: 'replacementMeta', id: 'qa-rollback' }), null);
+  assert.equal(await invoke('local_get', { collection: 'appSettings', id: 'qa-rollback' }), null);
 
   // Execute the same source facade against real Rust IPC, without a mock store.
   const bundle = buildSync({ entryPoints: ['src/lib/local/functions.ts'], bundle: true, platform: 'browser', format: 'iife', globalName: 'PanoramaQA', write: false, define: { 'process.env.NODE_ENV': '"production"' } }).outputFiles[0].text;
