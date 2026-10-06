@@ -4,7 +4,7 @@ Ce dépôt contient l’application Brevet Panorama Portable pour Windows.
 
 ## Signaler un problème
 
-Utilisez les [Issues GitHub](https://github.com/intelarti11/Brevet-Panorama-Portable/issues). Indiquez la version, Windows, les étapes pour reproduire le problème et le résultat attendu et observé. N’ajoutez aucun nom d’élève, INE, export SIECLE, classeur de notes, base de données, sauvegarde ou export d’établissement ; reproduisez le problème avec des données fictives.
+Utilisez les [Issues GitHub](https://github.com/intelarti11/Brevet-Panorama-Portable-DNB/issues). Indiquez la version, Windows, les étapes pour reproduire le problème et le résultat attendu et observé. N’ajoutez aucun nom d’élève, INE, export SIECLE, classeur de notes, base de données, sauvegarde ou export d’établissement ; reproduisez le problème avec des données fictives.
 
 ## Développer et vérifier
 

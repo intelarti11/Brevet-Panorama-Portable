@@ -147,7 +147,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 $sourceCommit = & git -C $repositoryRoot rev-parse HEAD
 if ($LASTEXITCODE -ne 0) { throw "Impossible d'identifier le commit source." }
-"Sources : https://github.com/intelarti11/Brevet-Panorama-Portable/tree/$sourceCommit`nVersion : $appVersion" |
+"Sources : https://github.com/intelarti11/Brevet-Panorama-Portable-DNB/tree/$sourceCommit`nVersion : $appVersion" |
     Set-Content -LiteralPath (Join-Path $packageDirectory 'SOURCE.txt') -Encoding UTF8
 $microsoftLicenses = Join-Path $packageDirectory 'LICENCES\Microsoft'
 foreach ($license in $runtimeLicenseFiles) {

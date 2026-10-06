@@ -4,7 +4,7 @@ Application Windows x64 pour suivre localement les élèves et les résultats du
 
 ## Télécharger et lancer
 
-Téléchargez la [dernière version Windows](https://github.com/intelarti11/Brevet-Panorama-Portable/releases/latest), puis :
+Téléchargez la [dernière version Windows](https://github.com/intelarti11/Brevet-Panorama-Portable-DNB/releases/latest), puis :
 
 1. Extrayez **tout le contenu** du ZIP dans un dossier où vous avez le droit d’écrire.
 2. Gardez le dossier **WebView2Fixed** à côté de **BrevetPanoramaPortable.exe**.
@@ -22,9 +22,9 @@ Les données de l’application restent sur l’ordinateur. Aucun compte ni conn
 
 ## Aide et licence
 
-- [Télécharger une version](https://github.com/intelarti11/Brevet-Panorama-Portable/releases)
-- [Signaler un problème](https://github.com/intelarti11/Brevet-Panorama-Portable/issues) — ne joignez jamais de nom, d’INE, de fichier d’établissement, de notes ou de sauvegarde.
-- [Page de présentation](https://intelarti11.github.io/Brevet-Panorama-Portable/)
+- [Télécharger une version](https://github.com/intelarti11/Brevet-Panorama-Portable-DNB/releases)
+- [Signaler un problème](https://github.com/intelarti11/Brevet-Panorama-Portable-DNB/issues) — ne joignez jamais de nom, d’INE, de fichier d’établissement, de notes ou de sauvegarde.
+- [Page de présentation](https://intelarti11.github.io/Brevet-Panorama-Portable-DNB/)
 - Auteur et mainteneur : [intelarti11](https://github.com/intelarti11).
 - Le code est sous licence [GNU AGPL version 3 ou ultérieure](LICENSE). Les notices des composants sont dans [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 

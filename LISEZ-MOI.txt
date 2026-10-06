@@ -3,7 +3,7 @@ Application locale pour Windows 10/11 x64
 
 TELECHARGEMENT
 Téléchargez la dernière version ici :
-https://github.com/intelarti11/Brevet-Panorama-Portable/releases/latest
+https://github.com/intelarti11/Brevet-Panorama-Portable-DNB/releases/latest
 
 INSTALLATION ET LANCEMENT
 1. Extrayez tout le contenu du ZIP dans un dossier local où vous pouvez écrire.
@@ -27,8 +27,8 @@ Ouvrez Données locales pour voir l’emplacement des données et créer une sau
 Pour déplacer l’application ou ses données, fermez-la et copiez le dossier complet, y compris data et WebView2Fixed, vers un autre emplacement inscriptible. Gardez aussi une copie de sauvegarde dans un emplacement séparé.
 
 AIDE
-Versions : https://github.com/intelarti11/Brevet-Panorama-Portable/releases
-Signaler un problème : https://github.com/intelarti11/Brevet-Panorama-Portable/issues
+Versions : https://github.com/intelarti11/Brevet-Panorama-Portable-DNB/releases
+Signaler un problème : https://github.com/intelarti11/Brevet-Panorama-Portable-DNB/issues
 Ne transmettez jamais de nom d’élève, d’INE, de fichier SIECLE, de notes, de base ou de sauvegarde. Reproduisez les problèmes avec des données fictives.
 
 LICENCES ET SOURCE
@@ -37,7 +37,7 @@ Le code est sous licence GNU AGPL version 3 ou ultérieure ; le texte est fourni
 Les conditions Microsoft de WebView2 indiquent que Microsoft Defender SmartScreen peut collecter et transmettre des données à Microsoft, sauf lorsque SmartScreen est désactivé. Consultez LICENSE-MICROSOFT-WEBVIEW2.html dans WebView2Fixed et les paramètres de confidentialité de Windows.
 
 SOURCE.txt indique le dépôt et la version du code correspondant à cette archive :
-https://github.com/intelarti11/Brevet-Panorama-Portable
+https://github.com/intelarti11/Brevet-Panorama-Portable-DNB
 
 Auteur et mainteneur : intelarti11
 https://github.com/intelarti11
